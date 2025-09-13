@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Academic Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0d0d0d;
+            color: #d1d5db;
+        }
+        
+        /* Fade-in animation for content */
+        .content-fade-in {
+            animation: fadeInContent 1.2s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes fadeInContent {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .back-button {
+            transition: transform 0.2s ease-in-out;
+        }
+        .back-button:hover {
+            transform: translateX(-5px);
+        }
+
+        /* Basic prose styling for readability */
+        .prose p, .prose h2, .prose h3 {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header class="bg-gray-900 bg-opacity-80 backdrop-blur-sm fixed top-0 left-0 right-0 z-50 p-4 shadow-lg">
+        <nav class="flex justify-between items-center max-w-7xl mx-auto px-4">
+            <a href="index.html" class="text-xl font-bold text-white">Catwhynot's Domain 💜</a>
+            <div class="hidden sm:flex space-x-6 text-gray-400 font-medium">
+                <a href="gallery.html" class="hover:text-white transition-colors duration-200">Gallery</a>
+                <a href="achievements.html" class="hover:text-white transition-colors duration-200">Achievements</a>
+                <a href="projects.html" class="hover:text-white transition-colors duration-200">My Projects</a>
+                <a href="hobbies.html" class="hover:text-white transition-colors duration-200">Hobbies</a>
+            </div>
+            <a href="contact.html" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-200">
+                Contact Me
+            </a>
+        </nav>
+    </header>
+
+    <main class="pt-24 pb-16 px-4 md:px-8 bg-gray-950 min-h-screen">
+        <div class="max-w-4xl mx-auto content-fade-in">
+            <!-- Back button to return to the home page -->
+            <a href="index.html" class="back-button inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold transition-all duration-200 mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                Back to Home
+            </a>
+
+            <!-- Article Title and Date -->
+            <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">My Academic Journey</h1>
+            <p class="text-gray-400 text-sm mb-12">Published on October 26, 2023</p>
+
+            <!-- Article Content -->
+            <div class="prose max-w-none text-gray-300 leading-relaxed">
+                <p>Welcome to a personal look into my academic journey as a high school junior. My coursework this year has been both challenging and incredibly rewarding. From the complex equations in AP Chemistry to the intricate systems of the human body in Honors Physiology, I've found a lot to be excited about. I'm also currently enrolled in AP Government and CP English III, which have helped me grow my critical thinking and writing skills.</p>
+                
+                <p>My goal is to pursue a career in nursing, and these courses are laying a strong foundation for that. They're helping me not only understand the scientific principles behind health and medicine but also develop the discipline and dedication needed for the field.</p>
+                
+                <p>This journey isn't just about grades; it's about building a passion for learning and a set of skills that will serve me for years to come. I'm excited to see where it leads, especially as I start to look more closely at colleges like Ohio State and Miami University.</p>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
