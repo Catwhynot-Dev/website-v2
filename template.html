@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Academic Journey</title>
+    <title>Article Title Here</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
             background-color: #0d0d0d;
             color: #d1d5db;
         }
-        
+
         /* Fade-in animation for content */
         .content-fade-in {
             animation: fadeInContent 1.2s ease-in-out forwards;
@@ -64,7 +64,7 @@
     </header>
 
     <main class="pt-24 pb-16 px-4 md:px-8 bg-gray-950 min-h-screen">
-        <div class="max-w-4xl mx-auto content-fade-in">
+        <div class="max-w-7xl mx-auto content-fade-in">
             <!-- Back button to return to the home page -->
             <a href="index.html" class="back-button inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold transition-all duration-200 mb-6">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -73,17 +73,31 @@
                 Back to Home
             </a>
 
-            <!-- Article Title and Date -->
-            <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">My Academic Journey</h1>
-            <p class="text-gray-400 text-sm mb-12">Published on October 26, 2023</p>
+            <!-- Two-column content layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <!-- Main Article Content (Left Column) -->
+                <div class="lg:col-span-2">
+                    <h1 class="text-4xl md:text-5xl font-bold text-white leading-tight mb-4">Article Title Here</h1>
+                    <p class="text-gray-400 text-sm mb-12">Published on [Date]</p>
 
-            <!-- Article Content -->
-            <div class="prose max-w-none text-gray-300 leading-relaxed">
-                <p>Welcome to a personal look into my academic journey as a high school junior. My coursework this year has been both challenging and incredibly rewarding. From the complex equations in AP Chemistry to the intricate systems of the human body in Honors Physiology, I've found a lot to be excited about. I'm also currently enrolled in AP Government and CP English III, which have helped me grow my critical thinking and writing skills.</p>
-                
-                <p>My goal is to pursue a career in nursing, and these courses are laying a strong foundation for that. They're helping me not only understand the scientific principles behind health and medicine but also develop the discipline and dedication needed for the field.</p>
-                
-                <p>This journey isn't just about grades; it's about building a passion for learning and a set of skills that will serve me for years to come. I'm excited to see where it leads, especially as I start to look more closely at colleges like Ohio State and Miami University.</p>
+                    <div class="prose max-w-none text-gray-300 leading-relaxed space-y-6">
+                        <!-- Main content goes here. You can add paragraphs, headings, etc. -->
+                        <p>This is the main body of your article. You can start writing here, adding paragraphs and other content as needed. The layout is designed to be clean and easy to read.</p>
+                        <p>Feel free to add as many paragraphs as you like. The right-hand column is optional, so you can leave it empty if you only want a single-column article.</p>
+                        <p>This layout is also fully responsive. On smaller screens, the right column will automatically move below the main article content.</p>
+                    </div>
+                </div>
+
+                <!-- Featured Image / Sidebar (Right Column) -->
+                <div class="lg:col-span-1">
+                    <div class="bg-gray-800 p-6 rounded-xl shadow-lg">
+                        <img src="https://placehold.co/600x400/1f2937/d1d5db?text=Featured+Image" alt="Featured Article Image" class="rounded-lg mb-4 w-full h-auto">
+                        <h3 class="text-xl font-bold text-white mb-2">About This Section</h3>
+                        <p class="text-gray-400 text-sm leading-relaxed">
+                            This space can be used for a featured image, a key quote, or a short summary. You can change this content for each article to highlight key points or provide context.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </main>
