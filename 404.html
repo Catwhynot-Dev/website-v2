@@ -1,43 +1,73 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-98DP5VKS42"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-            gtag("config", "G-98DP5VKS42");
-        </script>
-        <link rel="stylesheet" href="css/style.css" />
-        <title>404 Error | 3kh0</title>
-    </head>
-    <body>
-        <div id="particles-js"></div>
-        <div class="container">
-            <h1>404 Error</h1>
-            <p>
-                The requested URL or file was not found on this server. <br />
-                That is all we know.
-            </p>
-            <h2>Stats for nerds</h2>
-            Requested URL: <code id="full"></code><br />
-            Requested file path: <code id="path"></code><br />
-            Error code: <code id="error"></code><br />
-            Host name: <code id="host"></code><br />
-            Protocol used: <code id="proto"></code><br />
-            <script>
-                document.getElementById("full").innerHTML = window.location.href;
-                document.getElementById("path").innerHTML = window.location.pathname;
-                document.getElementById("error").innerHTML = "404";
-                document.getElementById("host").innerHTML = window.location.hostname;
-                document.getElementById("proto").innerHTML = window.location.protocol;
-            </script>
-            <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-            <script src="js/main.js"></script>
-            <script src="js/particles.js"></script>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>404 — Page not found</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/theme.css" />
+</head>
+<body>
+  <header class="site-header">
+    <a href="/" class="site-brand">Catwhynot's Domain</a>
+    <nav class="site-nav">
+      <a href="/template.html">Template</a>
+      <a href="/achievements.html">Achievements</a>
+      <a href="/projects/">My Projects</a>
+      <a href="/hobbies.html">Hobbies</a>
+      <a href="/quiz/">Anatomy Quiz</a>
+    </nav>
+    <a href="/contact.html" class="btn btn-primary cta">Contact Me</a>
+  </header>
+
+  <main class="page">
+    <header class="page-header">
+      <h1>404 — Page missing</h1>
+      <p class="meta">The address you entered doesn't exist anymore.</p>
+    </header>
+
+    <div class="content-grid">
+      <section class="prose">
+        <p>
+          Don't worry—you can head back to the homepage, browse the latest articles, or jump into the anatomy quiz. If you think
+          this is a mistake, feel free to reach out so I can fix the broken link.
+        </p>
+        <div class="hero-actions space-top">
+          <a href="/" class="btn btn-primary">Return home</a>
+          <a href="/quiz/" class="btn btn-ghost">Take the quiz</a>
         </div>
-    </body>
+      </section>
+
+      <aside class="sidebar-card">
+        <h2 class="card-title">Request details</h2>
+        <p class="muted">Collected for the curious.</p>
+        <ul>
+          <li>Requested URL: <code id="full"></code></li>
+          <li>Path: <code id="path"></code></li>
+          <li>Error code: <code id="error">404</code></li>
+          <li>Host: <code id="host"></code></li>
+          <li>Protocol: <code id="proto"></code></li>
+        </ul>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2024 Catwhynot. Built with care and a monochrome palette.</span>
+    <div class="footer-links">
+      <a href="/contact.html">Contact</a>
+      <a href="/projects/">Projects</a>
+      <a href="/quiz/">Quiz</a>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("full").textContent = window.location.href;
+    document.getElementById("path").textContent = window.location.pathname;
+    document.getElementById("host").textContent = window.location.hostname;
+    document.getElementById("proto").textContent = window.location.protocol;
+  </script>
+</body>
 </html>
