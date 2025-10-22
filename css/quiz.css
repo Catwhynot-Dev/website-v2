@@ -1,9 +1,12 @@
 :root {
-  --bg: #0b0f14;
-  --panel: #111827;
-  --border: #334155;
-  --text: #e5e7eb;
-  --muted: #94a3b8;
+  --bg: #f8f8f6;
+  --panel: #ffffff;
+  --border: #121212;
+  --text: #111111;
+  --muted: #555555;
+  --accent: #111111;
+  --accent-contrast: #f8f8f6;
+  --shadow: rgba(17, 17, 17, 0.12);
 }
 
 * {
@@ -12,9 +15,10 @@
 
 body {
   margin: 0;
-  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: "Special Elite", "Courier New", Courier, monospace;
   background: var(--bg);
   color: var(--text);
+  letter-spacing: 0.01em;
 }
 
 .wrap {
@@ -44,32 +48,39 @@ body {
 }
 
 .btn {
-  border: 1px solid var(--border);
-  padding: 8px 12px;
-  border-radius: 12px;
+  border: 2px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 999px;
   background: var(--panel);
   color: var(--text);
   cursor: pointer;
-  transition: filter 0.12s ease;
+  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  box-shadow: 0 2px 0 var(--shadow);
 }
 
 .btn:hover {
-  filter: brightness(1.08);
+  transform: translateY(-1px);
 }
 
 .btn.primary {
-  background: #0369a1;
-  border-color: #0ea5e9;
+  background: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.btn.primary:hover {
+  background: #000000;
 }
 
 .btn[disabled] {
   opacity: 0.6;
   cursor: not-allowed;
+  transform: none;
 }
 
 .btn.review {
-  border-color: #fbbf24;
-  color: #fbbf24;
+  border-color: var(--border);
+  color: var(--text);
+  background: transparent;
 }
 
 .input {
@@ -84,11 +95,11 @@ body {
   position: absolute;
   right: 0;
   top: 40px;
-  width: 180px;
+  width: 200px;
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  border: 2px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 12px 24px var(--shadow);
   z-index: 10;
 }
 
@@ -104,31 +115,33 @@ body {
 }
 
 .menu-item:hover {
-  background: #1f2937;
+  background: #f0f0f0;
 }
 
 .bar {
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
   display: flex;
   gap: 12px;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
   margin-bottom: 16px;
+  box-shadow: 0 12px 32px var(--shadow);
 }
 
 .imgbox {
   position: relative;
   user-select: none;
-  background: rgba(15, 23, 42, 0.45);
-  border: 1px solid var(--border);
-  border-radius: 16px;
+  background: #f0f0f0;
+  border: 2px solid var(--border);
+  border-radius: 20px;
   overflow: hidden;
   width: 100%;
   min-height: 300px;
+  box-shadow: 0 16px 40px var(--shadow);
 }
 
 .imgbox.drag-mode {
@@ -138,6 +151,7 @@ body {
 .imgbox.multi {
   aspect-ratio: 49 / 27;
   max-height: min(85vh, 1200px);
+  background: linear-gradient(90deg, #fafafa 0%, #eaeaea 100%);
 }
 
 .bg-strip {
@@ -147,7 +161,7 @@ body {
   gap: 0;
   align-items: stretch;
   justify-content: stretch;
-  background: rgba(15, 23, 42, 0.35);
+  background: transparent;
   z-index: 0;
 }
 
@@ -162,9 +176,9 @@ body {
   object-fit: contain;
   display: block;
   border-radius: 0;
-  border-right: 1px solid rgba(51, 65, 85, 0.6);
-  border-left: 1px solid rgba(51, 65, 85, 0.6);
-  background: rgba(15, 23, 42, 0.75);
+  border-right: 1px solid rgba(17, 17, 17, 0.2);
+  border-left: 1px solid rgba(17, 17, 17, 0.2);
+  background: #ffffff;
   pointer-events: none;
 }
 
@@ -178,35 +192,39 @@ body {
 
 .bg-strip.single .bg-image {
   border: none;
+  background: #ffffff;
 }
 
 .bg-image.active {
-  outline: 3px solid #0ea5e9;
+  outline: 3px solid var(--border);
   outline-offset: -3px;
 }
 
 .dot {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 999px;
-  border: 2px solid rgba(0, 0, 0, 0.5);
-  background: #38bdf8;
+  border: 2px solid var(--border);
+  background: var(--panel);
   transform: translate(-50%, -50%);
-  transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease;
+  transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
   z-index: 1;
+  box-shadow: 0 0 0 2px var(--panel);
 }
 
 .dot.correct {
-  background: #22c55e;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--panel);
 }
 
 .dot.wrong {
-  background: #ef4444;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px #d22b2b;
 }
 
 .dot.active {
-  outline: 3px solid #34d399;
+  outline: 3px solid var(--border);
   outline-offset: 2px;
 }
 
@@ -216,28 +234,31 @@ body {
 
 .dot.dragging {
   cursor: grabbing;
-  filter: brightness(1.2);
+  transform: translate(-50%, -50%) scale(1.1);
 }
 
 .badge {
   position: absolute;
-  padding: 4px 8px;
-  border-radius: 8px;
-  background: rgba(0, 0, 0, 0.55);
-  color: #c7d2fe;
-  transform: translate(-50%, -120%);
-  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-contrast);
+  transform: translate(-50%, -140%);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .panel {
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
   margin: 16px 0 24px;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  box-shadow: 0 12px 32px var(--shadow);
 }
 
 .panel-head {
@@ -250,8 +271,8 @@ body {
 }
 
 .coord-output {
-  background: rgba(15, 23, 42, 0.65);
-  border: 1px solid var(--border);
+  background: #f0f0f0;
+  border: 2px solid var(--border);
   border-radius: 12px;
   color: var(--text);
   padding: 12px;
@@ -268,14 +289,17 @@ body {
 
 details {
   background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 12px;
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 32px var(--shadow);
 }
 
 summary {
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .muted {
