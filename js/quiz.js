@@ -8,6 +8,21 @@
     sacralc1c2: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/sacralc1c2.jpeg",
   };
 
+  const SPINE_IMAGE_STRIP = [
+    { key: "vertebralcolumn", src: IMAGES.vertebralcolumn },
+    { key: "vertebraes", src: IMAGES.vertebraes },
+    { key: "sacralc1c2", src: IMAGES.sacralc1c2 },
+  ];
+
+  const BACKGROUND_LAYOUTS = {
+    anterior: [{ key: "anterior", src: IMAGES.anterior }],
+    inferior: [{ key: "inferior", src: IMAGES.inferior }],
+    lateral: [{ key: "lateral", src: IMAGES.lateral }],
+    vertebralcolumn: SPINE_IMAGE_STRIP,
+    vertebraes: SPINE_IMAGE_STRIP,
+    sacralc1c2: SPINE_IMAGE_STRIP,
+  };
+
   const VIEW_LABELS = {
     anterior: "Anterior skull",
     inferior: "Inferior skull",
@@ -88,40 +103,39 @@
       "Coronal suture",
     ],
     vertebralcolumn: [
-      "Atlas (C1)",
-      "Axis (C2)",
-      "Cervical vertebrae",
-      "Thoracic vertebrae",
-      "Lumbar vertebrae",
-      "Sacrum",
-      "Coccyx",
-      "Intervertebral disc",
-      "Spinous process",
-      "Transverse process",
+      "Cervical",
+      "Thoracic",
+      "Lumbar",
+      "Sacral",
+      "Coccygeal",
+      "C1–C7 (Cervical vertebrae)",
+      "T1–T12 (Thoracic vertebrae)",
+      "L1–L5 (Lumbar vertebrae)",
     ],
     vertebraes: [
-      "Spinous process",
-      "Transverse process",
-      "Vertebral foramen",
-      "Body",
-      "Superior articular facet",
-      "Inferior articular facet",
-      "Pedicle",
-      "Lamina",
       "Vertebral arch",
+      "Vertebral foramen",
+      "Vertebral body",
+      "Spinous process",
+      "Lamina",
+      "Pedicle",
+      "Transverse process",
+      "Superior articular process",
+      "Superior articular facet",
       "Transverse foramen",
+      "Superior costal facet for superior rib",
+      "Transverse costal facet for inferior rib",
     ],
     sacralc1c2: [
-      "Atlas (C1)",
-      "Axis (C2)",
-      "Dens (odontoid process)",
-      "Facet for dens",
-      "Transverse ligament",
-      "Sacrum",
-      "Sacral promontory",
-      "Anterior sacral foramina",
-      "Sacral canal",
+      "Articular process",
+      "Entrance to sacral canal",
+      "Median sacral crest",
+      "Sacral hiatus",
+      "Sacral foramina",
       "Coccyx",
+      "Base",
+      "Sacral promontory",
+      "Apex",
     ],
   };
 
@@ -209,7 +223,7 @@
     s
       .toLowerCase()
       .replace(/\([^)]*\)/g, "")
-      .replace(/-/g, "")
+      .replace(/[–—−-]/g, "")
       .replace(/\s+/g, " ")
       .trim()
       .replace(/\s+bone$/, "");
@@ -255,8 +269,8 @@
     state.review[key] = [];
   });
 
-  const bg = document.getElementById("bg");
   const stage = document.getElementById("stage");
+  const bgStrip = document.getElementById("bgStrip");
   const viewBtn = document.getElementById("viewBtn");
   const viewMenu = document.getElementById("viewMenu");
   const viewLabel = document.getElementById("viewLabel");
@@ -305,6 +319,23 @@
     badge.textContent = text;
     stage.appendChild(badge);
     setTimeout(() => badge.remove(), 950);
+  };
+
+  const renderBackgrounds = () => {
+    if (!bgStrip) return;
+    const backgrounds = BACKGROUND_LAYOUTS[state.view] || [];
+    bgStrip.innerHTML = "";
+    bgStrip.classList.toggle("single", backgrounds.length <= 1);
+    backgrounds.forEach(({ key, src }) => {
+      const img = document.createElement("img");
+      img.className = "bg-image";
+      if (key === state.view) {
+        img.classList.add("active");
+      }
+      img.src = src;
+      img.alt = `${VIEW_LABELS[key] || key} diagram`;
+      bgStrip.appendChild(img);
+    });
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
@@ -474,8 +505,7 @@
     reviewCount.textContent = reviewList.length ? `(${reviewList.length})` : "";
     reviewBadge.hidden = isDrag || !state.inReview;
 
-    bg.src = IMAGES[view];
-    bg.alt = `${activeLabel} diagram`;
+    renderBackgrounds();
 
     wordList.innerHTML = "";
     labels.forEach((label) => {
