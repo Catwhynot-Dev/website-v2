@@ -18,9 +18,13 @@ body {
 }
 
 .wrap {
-  max-width: min(100%, 3200px);
+  max-width: min(100%, 1100px);
   margin: 24px auto;
   padding: 0 16px 48px;
+}
+
+.wrap.spine-mode {
+  max-width: min(100%, 3200px);
 }
 
 .row {
@@ -123,13 +127,17 @@ body {
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
-  aspect-ratio: 9 / 5;
   width: 100%;
-  max-height: min(85vh, 1200px);
+  min-height: 300px;
 }
 
 .imgbox.drag-mode {
   cursor: crosshair;
+}
+
+.imgbox.multi {
+  aspect-ratio: 49 / 27;
+  max-height: min(85vh, 1200px);
 }
 
 .bg-strip {
@@ -157,6 +165,7 @@ body {
   border-right: 1px solid rgba(51, 65, 85, 0.6);
   border-left: 1px solid rgba(51, 65, 85, 0.6);
   background: rgba(15, 23, 42, 0.75);
+  pointer-events: none;
 }
 
 .bg-image:first-child {

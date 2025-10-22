@@ -117,32 +117,17 @@
       "Vertebral body (cervical)",
       "Spinous process (cervical)",
       "Lamina (cervical 1)",
-      "Lamina (cervical 2)",
       "Pedicle (cervical 1)",
-      "Pedicle (cervical 2)",
       "Transverse process (cervical 1)",
-      "Transverse process (cervical 2)",
-      "Transverse foramen (cervical 1)",
-      "Transverse foramen (cervical 2)",
       "Superior articular process (cervical 1)",
-      "Superior articular process (cervical 2)",
       "Superior articular facet (cervical 1)",
-      "Superior articular facet (cervical 2)",
+      "Transverse foramen (cervical 1)",
       "Vertebral foramen (thoracic)",
       "Vertebral body (thoracic)",
       "Spinous process (thoracic)",
-      "Lamina (thoracic 1)",
-      "Lamina (thoracic 2)",
-      "Pedicle (thoracic 1)",
-      "Pedicle (thoracic 2)",
       "Transverse process (thoracic 1)",
-      "Transverse process (thoracic 2)",
-      "Superior articular facet (thoracic 1)",
-      "Superior articular facet (thoracic 2)",
       "Superior costal facet for superior rib (1)",
-      "Superior costal facet for superior rib (2)",
       "Transverse costal facet for inferior rib (1)",
-      "Transverse costal facet for inferior rib (2)",
       "Vertebral foramen (lumbar)",
       "Vertebral body (lumbar)",
       "Spinous process (lumbar)",
@@ -152,7 +137,6 @@
       "Pedicle (lumbar 2)",
       "Transverse process (lumbar 1)",
       "Transverse process (lumbar 2)",
-      "Superior articular process (lumbar 1)",
       "Superior articular process (lumbar 2)",
       "Superior articular facet (lumbar 1)",
       "Superior articular facet (lumbar 2)",
@@ -263,6 +247,9 @@
     "Lumbar region (L₁–L₅)": { x: 11.1266, y: 73.2208 },
     "Sacral region": { x: 8.1363, y: 90.9405 },
     "Coccygeal region": { x: 24.4089, y: 96.3145 },
+    "C1–C7 (Cervical vertebrae)": { x: 24.8261, y: 18.1736 },
+    "T1–T12 (Thoracic vertebrae)": { x: 24.8957, y: 43.8816 },
+    "L1–L5 (Lumbar vertebrae)": { x: 25.1043, y: 71.9136 },
   };
   const COORDS_VERTEBRAES = {
     "Vertebral arch (cervical)": { x: 46.1057, y: 7.2803 },
@@ -275,10 +262,56 @@
     "Superior articular process (cervical 1)": { x: 50.1391, y: 72.4946 },
     "Superior articular facet (cervical 1)": { x: 49.5132, y: 72.785 },
     "Transverse foramen (cervical 1)": { x: 50.4868, y: 18.0283 },
+    "Vertebral foramen (thoracic)": { x: 46.662, y: 12.6543 },
+    "Vertebral body (thoracic)": { x: 46.7316, y: 18.3188 },
+    "Spinous process (thoracic)": { x: 44.9235, y: 26.7429 },
+    "Transverse process (thoracic 1)": { x: 48.9569, y: 36.0385 },
     "Superior costal facet for superior rib (1)": { x: 48.5396, y: 46.3508 },
     "Transverse costal facet for inferior rib (1)": { x: 51.1127, y: 34.2956 },
+    "Vertebral foramen (lumbar)": { x: 44.993, y: 42.1387 },
+    "Vertebral body (lumbar)": { x: 44.6453, y: 50.5628 },
+    "Spinous process (lumbar)": { x: 46.4534, y: 5.2469 },
+    "Lamina (lumbar 1)": { x: 48.1919, y: 9.459 },
+    "Lamina (lumbar 2)": { x: 43.5327, y: 35.8932 },
+    "Pedicle (lumbar 1)": { x: 42.8373, y: 14.833 },
+    "Pedicle (lumbar 2)": { x: 47.7051, y: 41.9935 },
+    "Transverse process (lumbar 1)": { x: 40.8901, y: 15.2687 },
+    "Transverse process (lumbar 2)": { x: 39.9166, y: 75.8351 },
+    "Superior articular process (lumbar 2)": { x: 51.7385, y: 13.0901 },
+    "Superior articular facet (lumbar 1)": { x: 50.9736, y: 14.3972 },
+    "Superior articular facet (lumbar 2)": { x: 42.2809, y: 39.2338 },
   };
-  const COORDS_SACRALC1C2 = {};
+  const COORDS_SACRALC1C2 = {
+    "Articulates with occipital condyles": { x: 48.7483, y: 49.6914 },
+    "Articulates with axis (C₂)": { x: 71.0014, y: 27.0334 },
+    "Transverse ligament": { x: 74.2698, y: 20.3522 },
+    "Vertebral foramen (atlas)": { x: 48.5396, y: 49.8366 },
+    "Anterior arch": { x: 48.8178, y: 49.6914 },
+    "Posterior arch": { x: 48.9569, y: 49.9818 },
+    "Superior articular facet (atlas 1)": { x: 48.6787, y: 49.6914 },
+    "Superior articular facet (atlas 2)": { x: 48.331, y: 49.4009 },
+    "Transverse foramen (atlas 1)": { x: 48.6092, y: 49.6914 },
+    "Transverse foramen (atlas 2)": { x: 48.6092, y: 49.8366 },
+    "Dens (odontoid process)": { x: 72.879, y: 18.0283 },
+    "Vertebral body (axis)": { x: 48.4701, y: 48.8199 },
+    "Spinous process (axis)": { x: 48.4701, y: 48.9651 },
+    "Superior articular facet (axis 1)": { x: 48.5396, y: 49.1104 },
+    "Superior articular facet (axis 2)": { x: 48.4701, y: 49.4009 },
+    "Articulates with atlas": { x: 75.1739, y: 32.5527 },
+    "Articular process": { x: 67.4548, y: 53.3224 },
+    "Entrance to sacral canal": { x: 70.0974, y: 54.9201 },
+    "Median sacral crest": { x: 77.6773, y: 72.0588 },
+    "Sacral hiatus": { x: 70.0278, y: 75.5447 },
+    "Sacral foramina (posterior 1)": { x: 49.235, y: 48.9651 },
+    "Sacral foramina (posterior 2)": { x: 48.6787, y: 49.5461 },
+    "Coccyx (posterior)": { x: 48.8178, y: 47.5127 },
+    "Base": { x: 94.1586, y: 51.5795 },
+    "Sacral promontory": { x: 93.3241, y: 54.4844 },
+    "Sacral foramina (anterior 1)": { x: 48.1919, y: 47.658 },
+    "Sacral foramina (anterior 2)": { x: 83.936, y: 71.3326 },
+    "Apex": { x: 93.9499, y: 81.6449 },
+    "Coccyx (anterior)": { x: 81.9889, y: 84.114 },
+  };
 
   const COORDS = {
     anterior: COORDS_ANTERIOR,
@@ -358,6 +391,7 @@
     state.review[key] = [];
   });
 
+  const wrap = document.querySelector(".wrap");
   const stage = document.getElementById("stage");
   const bgStrip = document.getElementById("bgStrip");
   const viewBtn = document.getElementById("viewBtn");
@@ -410,26 +444,84 @@
     setTimeout(() => badge.remove(), 950);
   };
 
+  const applySingleAspectRatio = (img) => {
+    if (!stage) return;
+    const { naturalWidth, naturalHeight } = img;
+    if (naturalWidth && naturalHeight) {
+      stage.style.aspectRatio = `${naturalWidth} / ${naturalHeight}`;
+    }
+  };
+
   const renderBackgrounds = () => {
-    if (!bgStrip) return;
+    if (!bgStrip || !stage) return;
     const backgrounds = BACKGROUND_LAYOUTS[state.view] || [];
+    const isMulti = backgrounds.length > 1;
+
+    stage.classList.toggle("multi", isMulti);
+    stage.classList.toggle("single", !isMulti);
+    if (wrap) {
+      wrap.classList.toggle("spine-mode", isMulti);
+    }
+    if (isMulti) {
+      stage.style.removeProperty("aspect-ratio");
+    }
+
     bgStrip.innerHTML = "";
-    bgStrip.classList.toggle("single", backgrounds.length <= 1);
+    bgStrip.classList.toggle("single", !isMulti);
+
     backgrounds.forEach(({ key, src }) => {
       const img = document.createElement("img");
       img.className = "bg-image";
       if (key === state.view) {
         img.classList.add("active");
       }
-      img.src = src;
+      img.draggable = false;
       img.alt = `${VIEW_LABELS[key] || key} diagram`;
+      img.src = src;
+      if (!isMulti) {
+        const updateAspect = () => applySingleAspectRatio(img);
+        if (img.complete && img.naturalWidth) {
+          updateAspect();
+        } else {
+          img.addEventListener("load", updateAspect, { once: true });
+        }
+      }
       bgStrip.appendChild(img);
     });
+
+    if (!backgrounds.length && !isMulti) {
+      stage.style.removeProperty("aspect-ratio");
+    }
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
+  const stripParenthetical = (value) => value.replace(/\s*\([^)]*\)/g, "").trim();
+
+  const getDisplayLabel = (view, key) => (view === "vertebraes" ? stripParenthetical(key) : key);
+
   const buildCoordMap = (view) => {
+    if (view === "vertebraes") {
+      const grouped = {};
+      state.dots[view].forEach((dot) => {
+        const label = getDisplayLabel(view, dot.key);
+        const point = {
+          x: Number(dot.x.toFixed(4)),
+          y: Number(dot.y.toFixed(4)),
+        };
+        if (grouped[label]) {
+          if (Array.isArray(grouped[label])) {
+            grouped[label].push(point);
+          } else {
+            grouped[label] = [grouped[label], point];
+          }
+        } else {
+          grouped[label] = point;
+        }
+      });
+      return grouped;
+    }
+
     const map = {};
     state.dots[view].forEach((dot) => {
       map[dot.key] = {
@@ -569,8 +661,8 @@
     if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
 
     if (isClick) {
-      const currentTarget = state.order[view][0] || "—";
-      targetEl.textContent = currentTarget;
+      const currentTarget = state.order[view][0];
+      targetEl.textContent = currentTarget ? getDisplayLabel(view, currentTarget) : "—";
       wrongStreakEl.textContent = wrong > 0 ? `Wrong ×${wrong}` : "";
     } else {
       targetEl.textContent = "—";
@@ -599,7 +691,7 @@
     wordList.innerHTML = "";
     labels.forEach((label) => {
       const li = document.createElement("li");
-      li.textContent = `• ${label}`;
+      li.textContent = `• ${getDisplayLabel(view, label)}`;
       wordList.appendChild(li);
     });
     wordCount.textContent = labels.length;
@@ -619,7 +711,7 @@
       el.className = classes.join(" ");
       el.style.left = `${dot.x}%`;
       el.style.top = `${dot.y}%`;
-      el.title = dot.key;
+      el.title = getDisplayLabel(view, dot.key);
       el.addEventListener("click", () => {
         if (!isClick) return;
         if (dot.correct) return;
