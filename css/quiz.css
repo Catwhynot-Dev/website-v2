@@ -18,7 +18,7 @@ body {
 }
 
 .wrap {
-  max-width: 1100px;
+  max-width: min(100%, 2200px);
   margin: 24px auto;
   padding: 0 16px 48px;
 }
@@ -119,11 +119,13 @@ body {
 .imgbox {
   position: relative;
   user-select: none;
-  min-height: 300px;
   background: rgba(15, 23, 42, 0.45);
   border: 1px solid var(--border);
   border-radius: 16px;
   overflow: hidden;
+  aspect-ratio: 49 / 27;
+  width: 100%;
+  max-height: min(85vh, 1200px);
 }
 
 .imgbox.drag-mode {
@@ -132,6 +134,8 @@ body {
 
 .imgbox img {
   width: 100%;
+  height: 100%;
+  object-fit: contain;
   display: block;
 }
 
