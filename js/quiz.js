@@ -3,9 +3,9 @@
     anterior: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/anteriorskull.png",
     inferior: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/inferiorskull.png",
     lateral: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/lateralskull.png",
-    vertebralcolumn: "/img/vertebralcolumn.jpeg",
-    vertebraes: "/img/vertebraes.jpeg",
-    sacralc1c2: "/img/sacralc1c2.jpeg",
+    vertebralcolumn: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/vertebralcolumn.jpeg",
+    vertebraes: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/vertebraes.jpeg",
+    sacralc1c2: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/sacralc1c2.jpeg",
   };
 
   const VIEW_LABELS = {
