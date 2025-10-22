@@ -111,6 +111,8 @@
       "C1–C7 (Cervical vertebrae)",
       "T1–T12 (Thoracic vertebrae)",
       "L1–L5 (Lumbar vertebrae)",
+      "Sacrum",
+      "Coccyx",
     ],
     vertebraes: [
       "Vertebral arch",
@@ -206,8 +208,30 @@
     "Coronal suture": { x: 54.09836065573771, y: 10.286081645773065 },
   };
 
-  const COORDS_VERTEBRALCOLUMN = {};
-  const COORDS_VERTEBRAES = {};
+  const COORDS_VERTEBRALCOLUMN = {
+    Cervical: { x: 12.1697, y: 17.5926 },
+    Thoracic: { x: 7.9277, y: 41.8482 },
+    Lumbar: { x: 11.1266, y: 73.2208 },
+    Sacral: { x: 8.1363, y: 90.9405 },
+    Coccygeal: { x: 24.4089, y: 96.3145 },
+    "C1–C7 (Cervical vertebrae)": { x: 24.8261, y: 18.1736 },
+    "T1–T12 (Thoracic vertebrae)": { x: 24.8957, y: 43.8816 },
+    "L1–L5 (Lumbar vertebrae)": { x: 25.1043, y: 71.9136 },
+  };
+  const COORDS_VERTEBRAES = {
+    "Vertebral arch": { x: 46.1057, y: 7.2803 },
+    "Vertebral foramen": { x: 46.3839, y: 78.4495 },
+    "Vertebral body": { x: 45.8275, y: 86.8736 },
+    "Spinous process": { x: 46.2448, y: 65.9586 },
+    Lamina: { x: 45.0626, y: 74.6732 },
+    Pedicle: { x: 49.235, y: 78.5948 },
+    "Transverse process": { x: 52.573, y: 76.1256 },
+    "Superior articular process": { x: 50.1391, y: 72.4946 },
+    "Superior articular facet": { x: 49.5132, y: 72.785 },
+    "Transverse foramen": { x: 50.4868, y: 18.0283 },
+    "Superior costal facet for superior rib": { x: 48.5396, y: 46.3508 },
+    "Transverse costal facet for inferior rib": { x: 51.1127, y: 34.2956 },
+  };
   const COORDS_SACRALC1C2 = {};
 
   const COORDS = {
@@ -219,9 +243,28 @@
     sacralc1c2: COORDS_SACRALC1C2,
   };
 
+  const SUBSCRIPT_MAP = {
+    "₀": "0",
+    "₁": "1",
+    "₂": "2",
+    "₃": "3",
+    "₄": "4",
+    "₅": "5",
+    "₆": "6",
+    "₇": "7",
+    "₈": "8",
+    "₉": "9",
+    "₋": "-",
+  };
+
+  const replaceSubscripts = (value) =>
+    value.replace(/[₀₁₂₃₄₅₆₇₈₉₋]/g, (char) => SUBSCRIPT_MAP[char] || char);
+
   const norm = (s) =>
-    s
+    replaceSubscripts(s)
       .toLowerCase()
+      .replace(/\bsub\s*(\d)/g, "$1")
+      .replace(/\bregion\b/g, "")
       .replace(/\([^)]*\)/g, "")
       .replace(/[–—−-]/g, "")
       .replace(/\s+/g, " ")
