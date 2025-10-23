@@ -138,10 +138,10 @@
       "Lumbar superior articular facet",
     ],
     sacralc1c2: [
-      "Axis articulation",
+    "Articulates with axis",
       "Transverse ligament",
       "Dens",
-      "Atlas articulation",
+    "Articulates with atlas",
       "Sacral articular process",
       "Sacral canal entrance",
       "Median sacral crest",
@@ -259,10 +259,10 @@
     "Lumbar superior articular facet": { x: 50.9736, y: 14.3972 },
   };
   const COORDS_SACRALC1C2 = {
-    "Axis articulation": { x: 71.0014, y: 27.0334 },
+    "Articulates with axis": { x: 71.0014, y: 27.0334 },
     "Transverse ligament": { x: 74.2698, y: 20.3522 },
     "Dens": { x: 72.879, y: 18.0283 },
-    "Atlas articulation": { x: 75.1739, y: 32.5527 },
+    "Articulates with atlas": { x: 75.1739, y: 32.5527 },
     "Sacral articular process": { x: 67.4548, y: 53.3224 },
     "Sacral canal entrance": { x: 70.0974, y: 54.9201 },
     "Median sacral crest": { x: 77.6773, y: 72.0588 },
@@ -304,6 +304,7 @@
       .toLowerCase()
       .replace(/\bsub\s*(\d)/g, "$1")
       .replace(/\bregion\b/g, "")
+      .replace(/articulates?\s+with\s+(axis|atlas)/g, "$1 articulation")
       .replace(/\([^)]*\)/g, "")
       .replace(/[–—−-]/g, "")
       .replace(/\s+/g, " ")
@@ -580,6 +581,7 @@
     const isClick = mode === "click";
     const isType = mode === "type";
     const isDrag = mode === "drag";
+    const activeIdx = firstUnansweredIndex(dots);
 
     if (SKULL_VIEWS.includes(view) && state.skullView !== view) {
       state.skullView = view;
@@ -615,7 +617,10 @@
     modeDrag.classList.toggle("primary", isDrag);
 
     promptBox.hidden = !isClick;
-    typeForm.hidden = !isType;
+    if (typeForm) {
+      typeForm.hidden = !isType;
+      typeForm.style.display = isType ? "flex" : "none";
+    }
     if (dragMessage) dragMessage.hidden = !isDrag;
     if (dragPanel) dragPanel.hidden = !isDrag;
     if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
@@ -638,11 +643,19 @@
     }
 
     if (isType) {
-      typeWrongEl.textContent = tWrong > 0 ? `Wrong ×${tWrong}` : "";
+      const activeDot = activeIdx !== null ? dots[activeIdx] : null;
+      if (typeWrongEl) {
+        if (tWrong >= 3 && activeDot) {
+          const answerText = getDisplayLabel(view, activeDot.key);
+          typeWrongEl.textContent = `Wrong ×${tWrong} — Answer: ${answerText}`;
+        } else {
+          typeWrongEl.textContent = tWrong > 0 ? `Wrong ×${tWrong}` : "";
+        }
+      }
       setTimeout(() => {
         if (answerInput) answerInput.focus();
       }, 0);
-    } else {
+    } else if (typeWrongEl) {
       typeWrongEl.textContent = "";
     }
 
@@ -668,8 +681,6 @@
 
     stage.classList.toggle("drag-mode", isDrag);
     stage.querySelectorAll(".dot, .badge").forEach((el) => el.remove());
-    const activeIdx = firstUnansweredIndex(dots);
-
     dots.forEach((dot, index) => {
       const classes = ["dot"];
       if (dot.correct) classes.push("correct");
@@ -735,6 +746,7 @@
     if (ok) {
       dot.correct = true;
       dot.wrong = false;
+      state.typeWrong[view] = 0;
       answerInput.value = "";
       try {
         good.currentTime = 0;
