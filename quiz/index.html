@@ -58,6 +58,15 @@
       <div id="bgStrip" class="bg-strip" aria-hidden="true"></div>
     </section>
 
+    <div id="celebration" class="celebration" hidden>
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
+      <div class="celebration-card" role="dialog" aria-labelledby="celebrationTitle" aria-modal="true">
+        <h2 id="celebrationTitle">Great work!</h2>
+        <p id="celebrationMessage">You've completed this diagram.</p>
+        <button id="playAgain" class="btn primary">Play again</button>
+      </div>
+    </div>
+
     <section id="dragPanel" class="panel" hidden>
       <header class="row panel-head">
         <h2 class="panel-title">Drag mode coordinate export</h2>
@@ -84,6 +93,7 @@
   <audio id="good" preload="auto" src="https://www.myinstants.com/media/sounds/pop_7e9Is8L.mp3"></audio>
   <audio id="bad" preload="auto" src="https://www.myinstants.com/media/sounds/pluh.mp3"></audio>
 
+  <script src="/js/quiz-data.js"></script>
   <script src="/js/quiz.js"></script>
 </body>
 </html>

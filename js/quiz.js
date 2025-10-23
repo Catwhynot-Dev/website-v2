@@ -1,286 +1,19 @@
 (function () {
-  const IMAGES = {
-    anterior: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/anteriorskull.png",
-    inferior: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/inferiorskull.png",
-    lateral: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/lateralskull.png",
-    vertebralcolumn: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/vertebralcolumn.jpeg",
-    vertebraes: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/vertebraes.jpeg",
-    sacralc1c2: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/sacralc1c2.jpeg",
-  };
+  if (!window.QUIZ_DATA) {
+    throw new Error("Quiz data is missing");
+  }
 
-  const SPINE_IMAGE_STRIP = [
-    { key: "vertebralcolumn", src: IMAGES.vertebralcolumn },
-    { key: "vertebraes", src: IMAGES.vertebraes },
-    { key: "sacralc1c2", src: IMAGES.sacralc1c2 },
-  ];
-
-  const BACKGROUND_LAYOUTS = {
-    anterior: [{ key: "anterior", src: IMAGES.anterior }],
-    inferior: [{ key: "inferior", src: IMAGES.inferior }],
-    lateral: [{ key: "lateral", src: IMAGES.lateral }],
-    vertebralcolumn: SPINE_IMAGE_STRIP,
-    vertebraes: SPINE_IMAGE_STRIP,
-    sacralc1c2: SPINE_IMAGE_STRIP,
-  };
-
-  const VIEW_LABELS = {
-    anterior: "Anterior skull",
-    inferior: "Inferior skull",
-    lateral: "Lateral skull",
-    vertebralcolumn: "Vertebral column",
-    vertebraes: "Typical vertebra",
-    sacralc1c2: "Sacrum / C1 / C2",
-  };
-
-  const SKULL_VIEWS = ["anterior", "inferior", "lateral"];
-  const SPINE_VIEWS = ["vertebralcolumn", "vertebraes", "sacralc1c2"];
-  const DEFAULT_SKULL_VIEW = "anterior";
-  const DEFAULT_SPINE_VIEW = "vertebralcolumn";
-
-  const LABELS = {
-    anterior: [
-      "Parietal bone",
-      "Sphenoid",
-      "Temporal bone",
-      "Ethmoid",
-      "Lacrimal bone",
-      "Palatine bone",
-      "Zygomatic bone",
-      "Nasal bone",
-      "Maxilla",
-      "Inferior nasal concha",
-      "Mandible",
-      "Sagittal suture",
-      "Coronal suture",
-      "Supra-orbital foramen",
-      "Optic canal",
-      "Superior orbital fissure",
-      "Temporal process of zygomatic bone",
-      "Mastoid process of temporal bone",
-      "Infra-orbital foramen",
-      "Middle nasal concha (part of ethmoid)",
-      "Perpendicular plate of ethmoid",
-      "Vomer",
-      "Nasal septum (bony portion)",
-    ],
-    inferior: [
-      "Frontal bone",
-      "Zygomatic bone",
-      "Vomer",
-      "Sphenoid",
-      "Maxilla",
-      "Palatine bone",
-      "Zygomatic arch",
-      "Styloid process",
-      "Mandibular fossa",
-      "External acoustic meatus",
-      "Temporal bone",
-      "Mastoid process",
-      "Lambdoid suture",
-      "Occipital bone",
-      "External occipital protuberance",
-      "Occipital condyle",
-      "Foramen magnum",
-    ],
-    lateral: [
-      "Sphenoid",
-      "Ethmoid",
-      "Lacrimal bone",
-      "Nasal bone",
-      "Zygomatic bone",
-      "Maxilla",
-      "Mastoid process",
-      "Styloid process",
-      "Zygomatic process of temporal bone",
-      "Temporal process of zygomatic bone",
-      "Zygomatic arch",
-      "Coronoid process",
-      "External acoustic meatus",
-      "Supra-orbital foramen",
-      "Infra-orbital foramen",
-      "Lambdoid suture",
-      "Squamous suture",
-      "Coronal suture",
-    ],
-    vertebralcolumn: [
-      "Cervical region (C₁–C₇)",
-      "Thoracic region (T₁–T₁₂)",
-      "Lumbar region (L₁–L₅)",
-      "Sacral region",
-      "Coccygeal region",
-      "Sacrum",
-      "Coccyx",
-    ],
-    vertebraes: [
-      "Cervical vertebral arch",
-      "Cervical vertebral foramen",
-      "Cervical vertebral body",
-      "Cervical spinous process",
-      "Cervical lamina",
-      "Cervical pedicle",
-      "Cervical transverse process",
-      "Cervical superior articular process",
-      "Cervical superior articular facet",
-      "Cervical transverse foramen",
-      "Thoracic vertebral foramen",
-      "Thoracic vertebral body",
-      "Thoracic spinous process",
-      "Thoracic transverse process",
-      "Superior costal facet for superior rib",
-      "Transverse costal facet for inferior rib",
-      "Lumbar vertebral foramen",
-      "Lumbar vertebral body",
-      "Lumbar spinous process",
-      "Lumbar lamina",
-      "Lumbar pedicle",
-      "Lumbar transverse process",
-      "Lumbar superior articular process",
-      "Lumbar superior articular facet",
-    ],
-    sacralc1c2: [
-    "Articulates with axis",
-      "Transverse ligament",
-      "Dens",
-    "Articulates with atlas",
-      "Sacral articular process",
-      "Sacral canal entrance",
-      "Median sacral crest",
-      "Sacral hiatus",
-      "Sacral base",
-      "Sacral promontory",
-      "Sacral apex",
-      "Anterior coccyx",
-    ],
-  };
-
-  const COORDS_ANTERIOR = {
-    "Parietal bone": { x: 35.6481, y: 19.3107 },
-    "Sphenoid": { x: 28.7037, y: 36.483 },
-    "Temporal bone": { x: 27.1605, y: 38.5395 },
-    "Ethmoid": { x: 37.4228, y: 43.3724 },
-    "Lacrimal bone": { x: 37.963, y: 44.9148 },
-    "Palatine bone": { x: 36.1111, y: 44.184 },
-    "Zygomatic bone": { x: 28.3179, y: 50.2619 },
-    "Nasal bone": { x: 40.8179, y: 42.6526 },
-    "Maxilla": { x: 35.8025, y: 54.992 },
-    "Inferior nasal concha": { x: 39.3519, y: 52.9354 },
-    "Mandible": { x: 33.4105, y: 68.1539 },
-    "Sagittal suture": { x: 41.7438, y: 16.4316 },
-    "Coronal suture": { x: 48.0035, y: 19.4155 },
-    "Supra-orbital foramen": { x: 48.071, y: 36.0717 },
-    "Optic canal": { x: 46.4506, y: 41.7272 },
-    "Superior orbital fissure": { x: 47.8395, y: 43.2696 },
-    "Temporal process of zygomatic bone": { x: 56.4043, y: 49.7478 },
-    "Mastoid process of temporal bone": { x: 55.4784, y: 54.7863 },
-    "Infra-orbital foramen": { x: 48.7654, y: 50.6732 },
-    "Middle nasal concha (part of ethmoid)": { x: 42.9784, y: 48.3082 },
-    "Perpendicular plate of ethmoid": { x: 41.5895, y: 51.0845 },
-    "Vomer": { x: 41.5123, y: 54.8891 },
-    "Nasal septum (bony portion)": { x: 41.4931, y: 48.8137 },
-  };
-
-  const COORDS_INFERIOR = {
-    "Frontal bone": { x: 38.676697678036156, y: 19.945987507149024 },
-    "Zygomatic bone": { x: 35.37808656692505, y: 24.459876396037913 },
-    "Vomer": { x: 49.35378101136949, y: 39.73765417381569 },
-    "Sphenoid": { x: 39.19753101136949, y: 35.223765284926806 },
-    "Maxilla": { x: 52.56558656692505, y: 19.0200615812231 },
-    "Palatine bone": { x: 52.13155878914727, y: 28.047839359000875 },
-    "Zygomatic arch": { x: 67.58294767803616, y: 29.783950470111986 },
-    "Styloid process": { x: 39.19753101136949, y: 47.60802454418606 },
-    "Mandibular fossa": { x: 37.54822545581394, y: 48.76543195159347 },
-    "External acoustic meatus": { x: 35.11766990025838, y: 50.38580232196384 },
-    "Temporal bone": { x: 68.62461434470283, y: 51.42746898863051 },
-    "Mastoid process": { x: 66.8885032335917, y: 55.24691343307495 },
-    "Lambdoid suture": { x: 33.72878101136949, y: 70.29320972937124 },
-    "Occipital bone": { x: 43.364197678036156, y: 75.15432084048236 },
-    "External occipital protuberance": { x: 50.308642122480606, y: 78.9737652849268 },
-    "Occipital condyle": { x: 57.16628101136949, y: 56.63580232196384 },
-    "Foramen magnum": { x: 50.048225455813935, y: 55.01543195159348 },
-  };
-
-  const COORDS_LATERAL = {
-    "Sphenoid": { x: 64.22372227579557, y: 39.08711025393764 },
-    "Ethmoid": { x: 71.45612343297975, y: 44.35872709739633 },
-    "Lacrimal bone": { x: 73.67405978784957, y: 43.84442301510768 },
-    "Nasal bone": { x: 78.68852459016394, y: 38.95853423336548 },
-    "Zygomatic bone": { x: 70.29893924783028, y: 52.587592414014786 },
-    "Maxilla": { x: 76.08486017357762, y: 54.25908068145291 },
-    "Mastoid process": { x: 44.06943105110897, y: 68.14529090324655 },
-    "Styloid process": { x: 53.23047251687561, y: 68.2738669238187 },
-    "Zygomatic process of temporal bone": { x: 60.84860173577628, y: 54.25908068145291 },
-    "Temporal process of zygomatic bone": { x: 64.80231436837029, y: 54.001928640308584 },
-    "Zygomatic arch": { x: 43.49083895853423, y: 82.41722918675667 },
-    "Coronoid process": { x: 64.80231436837029, y: 60.045001607200255 },
-    "External acoustic meatus": { x: 50.72324011571842, y: 59.787849566055925 },
-    "Supra-orbital foramen": { x: 75.89199614271939, y: 32.9154612664738 },
-    "Infra-orbital foramen": { x: 76.08486017357762, y: 51.173256187720995 },
-    "Lambdoid suture": { x: 25.747348119575697, y: 51.68756027000965 },
-    "Squamous suture": { x: 47.251687560270014, y: 33.55834136933462 },
-    "Coronal suture": { x: 54.09836065573771, y: 10.286081645773065 },
-  };
-
-  const COORDS_VERTEBRALCOLUMN = {
-    "Cervical region (C₁–C₇)": { x: 12.1697, y: 17.5926 },
-    "Thoracic region (T₁–T₁₂)": { x: 7.9277, y: 41.8482 },
-    "Lumbar region (L₁–L₅)": { x: 11.1266, y: 73.2208 },
-    "Sacral region": { x: 8.1363, y: 90.9405 },
-    "Coccygeal region": { x: 24.4089, y: 96.3145 },
-    "Sacrum": { x: 18.5, y: 86.2 },
-    "Coccyx": { x: 19.2, y: 97.6 },
-    "C1–C7 (Cervical vertebrae)": { x: 24.8261, y: 18.1736 },
-    "T1–T12 (Thoracic vertebrae)": { x: 24.8957, y: 43.8816 },
-    "L1–L5 (Lumbar vertebrae)": { x: 25.1043, y: 71.9136 },
-  };
-  const COORDS_VERTEBRAES = {
-    "Cervical vertebral arch": { x: 46.1057, y: 7.2803 },
-    "Cervical vertebral foramen": { x: 46.3839, y: 78.4495 },
-    "Cervical vertebral body": { x: 45.8275, y: 86.8736 },
-    "Cervical spinous process": { x: 46.2448, y: 65.9586 },
-    "Cervical lamina": { x: 45.0626, y: 74.6732 },
-    "Cervical pedicle": { x: 49.235, y: 78.5948 },
-    "Cervical transverse process": { x: 52.573, y: 76.1256 },
-    "Cervical superior articular process": { x: 50.1391, y: 72.4946 },
-    "Cervical superior articular facet": { x: 49.5132, y: 72.785 },
-    "Cervical transverse foramen": { x: 50.4868, y: 18.0283 },
-    "Thoracic vertebral foramen": { x: 46.662, y: 12.6543 },
-    "Thoracic vertebral body": { x: 46.7316, y: 18.3188 },
-    "Thoracic spinous process": { x: 44.9235, y: 26.7429 },
-    "Thoracic transverse process": { x: 48.9569, y: 36.0385 },
-    "Superior costal facet for superior rib": { x: 48.4006, y: 47.8032 },
-    "Transverse costal facet for inferior rib": { x: 51.1127, y: 34.2956 },
-    "Lumbar vertebral foramen": { x: 44.993, y: 42.1387 },
-    "Lumbar vertebral body": { x: 44.6453, y: 50.5628 },
-    "Lumbar spinous process": { x: 46.4534, y: 5.2469 },
-    "Lumbar lamina": { x: 48.1919, y: 9.459 },
-    "Lumbar pedicle": { x: 42.8373, y: 14.833 },
-    "Lumbar transverse process": { x: 40.8901, y: 15.2687 },
-    "Lumbar superior articular process": { x: 51.7385, y: 13.0901 },
-    "Lumbar superior articular facet": { x: 50.9736, y: 14.3972 },
-  };
-  const COORDS_SACRALC1C2 = {
-    "Articulates with axis": { x: 71.0014, y: 27.0334 },
-    "Transverse ligament": { x: 74.2698, y: 20.3522 },
-    "Dens": { x: 72.879, y: 18.0283 },
-    "Articulates with atlas": { x: 75.1739, y: 32.5527 },
-    "Sacral articular process": { x: 67.4548, y: 53.3224 },
-    "Sacral canal entrance": { x: 70.0974, y: 54.9201 },
-    "Median sacral crest": { x: 77.6773, y: 72.0588 },
-    "Sacral hiatus": { x: 70.0278, y: 75.5447 },
-    "Sacral base": { x: 94.1586, y: 51.5795 },
-    "Sacral promontory": { x: 93.3241, y: 54.4844 },
-    "Sacral apex": { x: 93.9499, y: 81.6449 },
-    "Anterior coccyx": { x: 81.9889, y: 84.114 },
-  };
-
-  const COORDS = {
-    anterior: COORDS_ANTERIOR,
-    inferior: COORDS_INFERIOR,
-    lateral: COORDS_LATERAL,
-    vertebralcolumn: COORDS_VERTEBRALCOLUMN,
-    vertebraes: COORDS_VERTEBRAES,
-    sacralc1c2: COORDS_SACRALC1C2,
-  };
+  const {
+    IMAGES,
+    BACKGROUND_LAYOUTS,
+    VIEW_LABELS,
+    SKULL_VIEWS,
+    SPINE_VIEWS,
+    DEFAULT_SKULL_VIEW,
+    DEFAULT_SPINE_VIEW,
+    LABELS,
+    COORDS,
+  } = window.QUIZ_DATA;
 
   const SUBSCRIPT_MAP = {
     "₀": "0",
@@ -334,6 +67,7 @@
         .toLowerCase()
         .replace(/\bsub\s*(\d)/g, "$1")
         .replace(/\bregion\b/g, "")
+        .replace(/\bodontoid(?: process)?\b/g, "dens")
         .replace(/articulates?\s+with\s+(axis|atlas)/g, "$1 articulation")
         .replace(/\([^)]*\)/g, "")
         .replace(/[–—−-]/g, "")
@@ -373,15 +107,18 @@
     typeWrong: {},
     review: {},
     inReview: false,
+    completedViews: new Set(),
   };
 
-  VIEW_KEYS.forEach((key) => {
+  const initViewState = (key) => {
     state.dots[key] = makeDots(LABELS[key], COORDS[key] || {});
     state.order[key] = shuffle(LABELS[key]);
     state.wrongStreak[key] = 0;
     state.typeWrong[key] = 0;
     state.review[key] = [];
-  });
+  };
+
+  VIEW_KEYS.forEach(initViewState);
 
   const wrap = document.querySelector(".wrap");
   const stage = document.getElementById("stage");
@@ -415,6 +152,11 @@
   const wordCount = document.getElementById("wordCount");
   const good = document.getElementById("good");
   const bad = document.getElementById("bad");
+  const celebration = document.getElementById("celebration");
+  const confettiBox = document.getElementById("confetti");
+  const playAgainBtn = document.getElementById("playAgain");
+  const celebrationTitle = document.getElementById("celebrationTitle");
+  const celebrationMessage = document.getElementById("celebrationMessage");
 
   const firstUnansweredIndex = (dots) => {
     for (let i = 0; i < dots.length; i += 1) {
@@ -434,6 +176,41 @@
     badge.textContent = text;
     stage.appendChild(badge);
     setTimeout(() => badge.remove(), 950);
+  };
+
+  const resetView = (view) => {
+    if (!VIEW_KEYS.includes(view)) return;
+    initViewState(view);
+    state.completedViews.delete(view);
+  };
+
+  const hideCelebration = () => {
+    if (celebration) celebration.hidden = true;
+    if (confettiBox) confettiBox.innerHTML = "";
+  };
+
+  const triggerCelebration = (view) => {
+    if (!celebration || !confettiBox) return;
+    state.completedViews.add(view);
+    confettiBox.innerHTML = "";
+    if (celebrationTitle) {
+      celebrationTitle.textContent = "Great work!";
+    }
+    if (celebrationMessage) {
+      const viewName = VIEW_LABELS[view] || view;
+      celebrationMessage.textContent = `You've completed the ${viewName} diagram.`;
+    }
+    const pieces = 120;
+    for (let i = 0; i < pieces; i += 1) {
+      const shard = document.createElement("span");
+      shard.className = "confetti-piece";
+      shard.style.setProperty("--left", `${Math.random() * 100}%`);
+      shard.style.setProperty("--delay", `${(Math.random() * 0.8).toFixed(2)}s`);
+      shard.style.setProperty("--duration", `${(2.2 + Math.random() * 1.8).toFixed(2)}s`);
+      shard.style.setProperty("--hue", `${Math.floor(Math.random() * 360)}`);
+      confettiBox.appendChild(shard);
+    }
+    celebration.hidden = false;
   };
 
   const applySingleAspectRatio = (img) => {
@@ -540,6 +317,16 @@
   };
 
   let dragState = null;
+
+  if (playAgainBtn) {
+    playAgainBtn.addEventListener("click", () => {
+      const currentView = state.view;
+      resetView(currentView);
+      state.inReview = false;
+      hideCelebration();
+      render();
+    });
+  }
 
   const startDrag = (event, index) => {
     if (state.mode !== "drag") return;
@@ -700,6 +487,18 @@
     reviewCount.textContent = reviewList.length ? `(${reviewList.length})` : "";
     reviewBadge.hidden = isDrag || !state.inReview;
 
+    const viewCompleted =
+      allCorrect && !state.inReview && reviewList.length === 0 && state.mode !== "drag";
+    if (viewCompleted) {
+      if (!state.completedViews.has(view)) {
+        triggerCelebration(view);
+      }
+    } else if (celebration && !celebration.hidden && state.view === view) {
+      if (!state.completedViews.has(view)) {
+        hideCelebration();
+      }
+    }
+
     renderBackgrounds();
 
     wordList.innerHTML = "";
@@ -812,20 +611,25 @@
     });
     state.order[view] = [...list];
     state.inReview = true;
+    state.completedViews.delete(view);
+    hideCelebration();
     render();
   });
 
   modeClick.addEventListener("click", () => {
+    hideCelebration();
     state.mode = "click";
     render();
   });
 
   modeType.addEventListener("click", () => {
+    hideCelebration();
     state.mode = "type";
     render();
   });
 
   modeDrag.addEventListener("click", () => {
+    hideCelebration();
     state.mode = "drag";
     state.inReview = false;
     if (copyStatus) {
@@ -881,6 +685,7 @@
         state.skullView = selectedView;
         state.view = selectedView;
         state.inReview = false;
+        hideCelebration();
         viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
         render();
@@ -904,6 +709,7 @@
         state.spineView = selectedView;
         state.view = selectedView;
         state.inReview = false;
+        hideCelebration();
         spineMenu.hidden = true;
         if (viewMenu) viewMenu.hidden = true;
         render();

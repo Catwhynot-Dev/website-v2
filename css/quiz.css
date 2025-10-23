@@ -338,3 +338,76 @@ summary {
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(5, 5, 5, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 40;
+}
+
+.celebration[hidden] {
+  display: none;
+}
+
+.confetti {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -120px;
+  left: var(--left);
+  width: 10px;
+  height: 14px;
+  background: hsl(var(--hue), 100%, 82%);
+  opacity: 0;
+  transform: translate3d(0, 0, 0);
+  animation: confettiFall var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+.celebration-card {
+  position: relative;
+  z-index: 1;
+  background: var(--panel);
+  border: 2px solid var(--border);
+  border-radius: 20px;
+  padding: 32px 36px;
+  text-align: center;
+  box-shadow: 0 16px 48px var(--shadow);
+  max-width: min(90vw, 420px);
+}
+
+.celebration-card h2 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+.celebration-card p {
+  margin: 0 0 20px;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translate3d(0, -40vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(0, 120vh, 0) rotate(540deg);
+    opacity: 0;
+  }
+}
