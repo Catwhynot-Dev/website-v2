@@ -1,78 +1,121 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catwhynot's Domain</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0d0d0d;
-            color: #d1d5db;
-            overflow-x: hidden;
-        }
-
-        /* Hero Section Animation */
-        .hero-title {
-            animation: fadeIn 1.5s ease-in-out forwards;
-        }
-
-        .hero-text {
-            animation: fadeIn 1.5s ease-in-out 0.5s forwards;
-            opacity: 0;
-        }
-
-        .hero-button {
-            animation: fadeIn 1.5s ease-in-out 1s forwards;
-            opacity: 0;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Article Card Animation */
-        .article-card {
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-            cursor: pointer;
-        }
-
-        .article-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Horizontal Scroll */
-        .article-container {
-            -ms-overflow-style: none; /* IE and Edge */
-            scrollbar-width: none; /* Firefox */
-            scroll-snap-type: x mandatory;
-            scroll-behavior: smooth;
-        }
-
-        .article-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .article-page {
-            flex: 0 0 100%;
-            display: flex;
-            gap: 1.5rem;
-            scroll-snap-align: center;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catwhynot's Domain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/theme.css" />
 </head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="site-brand">Catwhynot's Domain</a>
+    <nav class="site-nav">
+      <a href="template.html">Template</a>
+      <a href="achievements.html">Achievements</a>
+      <a href="projects/">My Projects</a>
+      <a href="hobbies.html">Hobbies</a>
+      <a href="/quiz/">Physiology</a>
+    </nav>
+    <a href="contact.html" class="btn btn-primary cta">Contact Me</a>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <p class="hero-eyebrow">Stories in monochrome</p>
+        <h1 class="hero-title">Connect, grow, and be happy</h1>
+        <p class="hero-copy">
+          I'm Cat, also known as Catwhynot, an aspiring nursing student and high school junior exploring my identity, curiosity,
+          and creativity. This is my corner of the web where I document the
+          projects, memories, and milestones that keep me moving forward.
+        </p>
+        <div class="hero-actions">
+          <a href="articles.html" class="btn btn-primary">Start my journey</a>
+          <a href="/quiz/" class="btn btn-ghost">Explore physiology</a>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <h2 class="card-title">Current highlights</h2>
+        <p>
+          Anatomy review sessions, college planning, and late-night coding experiments—all powered by caffeine and a little bit of
+          determination.
+        </p>
+        <ul>
+          <li>Interactive skull and spine study tools</li>
+          <li>AP coursework prep and note taking</li>
+          <li>Curating music and game favorites weekly</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">My Articles &amp; Projects</h2>
+        <p class="section-intro">
+          Dive into the posts and projects that trace my journey through school, hobbies, and the things that make me, me.
+        </p>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <h3 class="card-title">My Academic Journey</h3>
+          <p>A personal look at my favorite classes, AP Chemistry labs, and what keeps me motivated in school.</p>
+          <a href="academic_journey.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">My Road to Nursing</h3>
+          <p>Documenting why healthcare inspires me and the steps I'm taking to prepare for a future in nursing.</p>
+          <a href="road_to_nursing.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Gaming and Life Lessons</h3>
+          <p>How games influence the way I relax, think, and learn valuable teamwork skills.</p>
+          <a href="gaming.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Thoughts on Conservatism</h3>
+          <p>A glimpse into my personal values and the conversations that help me shape them.</p>
+          <a href="conservatism.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">A Tour of My GitHub</h3>
+          <p>Peek behind the repos that run this site and the experiments I'm tinkering with lately.</p>
+          <a href="github_tour.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Weekly Music Rotation</h3>
+          <p>Tracks I can't stop looping and the artists that soundtrack my latest study sessions.</p>
+          <a href="music_week.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Top 5 Games Right Now</h3>
+          <p>From cozy favorites to competitive staples—what's in my current rotation.</p>
+          <a href="top5_games.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Quote Collection</h3>
+          <p>Lines that keep me grounded, motivated, and ready for whatever comes next.</p>
+          <a href="quotes.html">Read more →</a>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Interactive Physiology Quiz</h3>
+          <p>Test your knowledge of skull, spine, and more with the study tool I built for class.</p>
+          <a href="/quiz/">Start practicing →</a>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2024 Catwhynot. Built with care and a monochrome palette.</span>
+    <div class="footer-links">
+      <a href="contact.html">Contact</a>
+      <a href="projects/">Projects</a>
+      <a href="/quiz/">Physiology</a>
+    </div>
+  </footer>
 <body class="antialiased">
 
     <!-- Header -->
