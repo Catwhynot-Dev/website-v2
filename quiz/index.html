@@ -8,12 +8,14 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/theme.css" />
+  <title>Skull Anatomy Quiz</title>
   <link rel="stylesheet" href="/css/quiz.css" />
 </head>
 <body>
   <div class="wrap">
     <header class="row header">
       <h1>Physiology — Quiz</h1>
+      <h1>Skull Anatomy — Quiz</h1>
       <div class="row controls">
         <div class="menu">
           <button id="viewBtn" class="btn">View: <span id="viewLabel">anterior</span> ▾</button>
@@ -34,6 +36,8 @@
         <button id="modeClick" class="btn primary">Click</button>
         <button id="modeType" class="btn">Type</button>
         <button id="modeDrag" class="btn">Drag</button>
+        <button id="modeClick" class="btn primary">Click</button>
+        <button id="modeType" class="btn">Type</button>
       </div>
     </header>
 
@@ -82,6 +86,7 @@
         <button id="copyCoords" class="btn">Copy JSON</button>
         <span id="copyStatus" class="muted" role="status" aria-live="polite"></span>
       </div>
+      <img id="bg" alt="Skull view" loading="lazy" />
     </section>
 
     <details open>
@@ -94,6 +99,9 @@
   <audio id="bad" preload="auto" src="https://www.myinstants.com/media/sounds/pluh.mp3"></audio>
 
   <script src="/js/quiz-data.js"></script>
+  <audio id="good" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+  <audio id="bad" preload="auto" src="https://assets.mixkit.co/active_storage/sfx/2953/2953-preview.mp3"></audio>
+
   <script src="/js/quiz.js"></script>
 </body>
 </html>
