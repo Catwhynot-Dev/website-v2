@@ -299,17 +299,48 @@
   const replaceSubscripts = (value) =>
     value.replace(/[₀₁₂₃₄₅₆₇₈₉₋]/g, (char) => SUBSCRIPT_MAP[char] || char);
 
+  const OPTIONAL_PREFIXES = new Set([
+    "anterior",
+    "atlas",
+    "axis",
+    "cervical",
+    "coccygeal",
+    "coccyx",
+    "lumbar",
+    "posterior",
+    "sacral",
+    "thoracic",
+  ]);
+
+  const stripOptionalQualifiers = (text) => {
+    const words = text.split(" ").filter(Boolean);
+    while (words.length > 1 && OPTIONAL_PREFIXES.has(words[0])) {
+      const qualifier = words[0];
+      const remainder = words.slice(1).join(" ");
+      if (
+        (qualifier === "sacral" && /\b(foramina|hiatus)\b/.test(remainder)) ||
+        ((qualifier === "atlas" || qualifier === "axis") && /\barticulation\b/.test(remainder))
+      ) {
+        break;
+      }
+      words.shift();
+    }
+    return words.join(" ");
+  };
+
   const norm = (s) =>
-    replaceSubscripts(s)
-      .toLowerCase()
-      .replace(/\bsub\s*(\d)/g, "$1")
-      .replace(/\bregion\b/g, "")
-      .replace(/articulates?\s+with\s+(axis|atlas)/g, "$1 articulation")
-      .replace(/\([^)]*\)/g, "")
-      .replace(/[–—−-]/g, "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .replace(/\s+bone$/, "");
+    stripOptionalQualifiers(
+      replaceSubscripts(s)
+        .toLowerCase()
+        .replace(/\bsub\s*(\d)/g, "$1")
+        .replace(/\bregion\b/g, "")
+        .replace(/articulates?\s+with\s+(axis|atlas)/g, "$1 articulation")
+        .replace(/\([^)]*\)/g, "")
+        .replace(/[–—−-]/g, "")
+        .replace(/\s+/g, " ")
+        .trim()
+        .replace(/\s+bone$/, "")
+    );
 
   const shuffle = (array) => {
     const clone = [...array];
