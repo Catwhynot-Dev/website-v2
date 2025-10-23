@@ -225,9 +225,24 @@ body {
   box-shadow: 0 0 0 2px rgba(210, 43, 43, 0.4);
 }
 
+@keyframes dotMonoPulse {
+  0%,
+  100% {
+    background: var(--text);
+    border-color: var(--text);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35),
+      0 0 0 6px rgba(255, 255, 255, 0.08);
+  }
+  50% {
+    background: var(--bg);
+    border-color: var(--bg);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.65), 0 0 0 6px rgba(255, 255, 255, 0.02);
+  }
+}
+
 .dot.active {
-  outline: 3px solid var(--border);
-  outline-offset: 2px;
+  animation: dotMonoPulse 1.3s ease-in-out infinite;
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
 .dot.draggable {

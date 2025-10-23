@@ -620,6 +620,14 @@
     if (dragPanel) dragPanel.hidden = !isDrag;
     if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
 
+    if (answerInput) {
+      answerInput.disabled = !isType;
+      answerInput.setAttribute("aria-disabled", (!isType).toString());
+      if (!isType) {
+        answerInput.blur();
+      }
+    }
+
     if (isClick) {
       const currentTarget = state.order[view][0];
       targetEl.textContent = currentTarget ? getDisplayLabel(view, currentTarget) : "—";
@@ -631,7 +639,9 @@
 
     if (isType) {
       typeWrongEl.textContent = tWrong > 0 ? `Wrong ×${tWrong}` : "";
-      setTimeout(() => answerInput.focus(), 0);
+      setTimeout(() => {
+        if (answerInput) answerInput.focus();
+      }, 0);
     } else {
       typeWrongEl.textContent = "";
     }
