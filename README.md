@@ -21,6 +21,11 @@ To explore locally, open `index.html` for the main site or `quiz/index.html` for
 The production deployment is driven by Vercel. Push the latest updates to the `main` branch and Vercel will automatically build and release the site.
 
 ### If you can use Git locally
+=======
+## Deployment
+
+The production deployment is driven by Vercel. Push the latest updates to the `main` branch and Vercel will automatically build
+and release the site. A typical publish flow looks like:
 
 1. Finish commits on your working branch and merge them into `main` (`git checkout main && git merge <feature-branch>`).
 2. Push `main` to GitHub (`git push origin main`).
@@ -57,3 +62,4 @@ git push origin work
 ```
 
 The pull request will update automatically, and you can merge it once the conflicts are cleared.
+=======
