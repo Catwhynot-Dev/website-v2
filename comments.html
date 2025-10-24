@@ -1,30 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
- <title>Comments | 3kh0</title>
-<style>
-  .comments-list {
- height: 1800px;
-}
-.home-desc {
-    visibility: hidden;
-}
- </style>
- <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-98DP5VKS42"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-98DP5VKS42');
-</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Comments | Catwhynot's Domain</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/theme.css" />
+  <style>
+    .comments-shell {
+      background: var(--surface-alt);
+      border: 1px solid var(--divider);
+      border-radius: 20px;
+      padding: clamp(24px, 4vw, 40px);
+      box-shadow: 0 20px 40px var(--shadow);
+    }
+  </style>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-98DP5VKS42"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag('js', new Date());
+    gtag('config', 'G-98DP5VKS42');
+  </script>
 </head>
 <body>
-<!-- begin wwww.htmlcommentbox.com -->
- <div id="HCB_comment_box">Loading comments...</div>
- <link rel="stylesheet" type="text/css" href="https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0" />
- <script type="text/javascript" id="hcb"> /*<!--*/ if(!window.hcb_user){hcb_user={};} (function(){var s=document.createElement("script"), l=hcb_user.PAGE || (""+window.location).replace(/'/g,"%27"), h="https://www.htmlcommentbox.com";s.setAttribute("type","text/javascript");s.setAttribute("src", h+"/jread?page="+encodeURIComponent(l).replace("+","%2B")+"&mod=%241%24wq1rdBcg%24kZFLVTIpYdbZ51.Ko0jKU1"+"&opts=16798&num=10&ts=1641485913457");if (typeof s!="undefined") document.getElementsByTagName("head")[0].appendChild(s);})(); /*-->*/ </script>
-<!-- end www.htmlcommentbox.com -->
+  <header class="site-header">
+    <a href="/" class="site-brand">Catwhynot's Domain</a>
+    <nav class="site-nav">
+      <a href="/template.html">Template</a>
+      <a href="/achievements.html">Achievements</a>
+      <a href="/projects/">My Projects</a>
+      <a href="/hobbies.html">Hobbies</a>
+      <a href="/quiz/">Physiology</a>
+    </nav>
+    <a href="/contact.html" class="btn btn-primary cta">Contact Me</a>
+  </header>
+
+  <main class="page">
+    <header class="page-header">
+      <h1>Leave a note</h1>
+      <p class="meta">Say hello, share feedback, or drop a recommendation.</p>
+    </header>
+
+    <div class="comments-shell">
+      <div id="HCB_comment_box">Loading comments...</div>
+      <link
+        rel="stylesheet"
+        type="text/css"
+        href="https://www.htmlcommentbox.com/static/skins/bootstrap/twitter-bootstrap.css?v=0"
+      />
+      <script type="text/javascript" id="hcb">
+        if (!window.hcb_user) {
+          hcb_user = {};
+        }
+        (function () {
+          var s = document.createElement('script'),
+            l = hcb_user.PAGE || ('' + window.location).replace(/'/g, '%27'),
+            h = 'https://www.htmlcommentbox.com';
+          s.setAttribute('type', 'text/javascript');
+          s.setAttribute(
+            'src',
+            h +
+              '/jread?page=' +
+              encodeURIComponent(l).replace('+', '%2B') +
+              '&mod=%241%24wq1rdBcg%24kZFLVTIpYdbZ51.Ko0jKU1' +
+              '&opts=16798&num=10&ts=1641485913457'
+          );
+          if (typeof s != 'undefined') document.getElementsByTagName('head')[0].appendChild(s);
+        })();
+      </script>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <span>© 2024 Catwhynot. Built with care and a monochrome palette.</span>
+    <div class="footer-links">
+      <a href="/contact.html">Contact</a>
+      <a href="/projects/">Projects</a>
+      <a href="/quiz/">Physiology</a>
+    </div>
+  </footer>
 </body>
 </html>
