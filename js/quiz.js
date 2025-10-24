@@ -434,18 +434,23 @@
     modeDrag.classList.toggle("primary", isDrag);
 
     promptBox.hidden = !isClick;
-    if (typeForm) {
-      typeForm.hidden = !isType;
-      typeForm.style.display = isType ? "flex" : "none";
-    }
     if (dragMessage) dragMessage.hidden = !isDrag;
     if (dragPanel) dragPanel.hidden = !isDrag;
     if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
+
+    if (typeForm) {
+      typeForm.hidden = !isType;
+      typeForm.setAttribute("aria-hidden", (!isType).toString());
+      typeForm.style.display = isType ? "flex" : "none";
+    }
 
     if (answerInput) {
       answerInput.disabled = !isType;
       answerInput.setAttribute("aria-disabled", (!isType).toString());
       if (!isType) {
+        if (answerInput.value) {
+          answerInput.value = "";
+        }
         answerInput.blur();
       }
     }
