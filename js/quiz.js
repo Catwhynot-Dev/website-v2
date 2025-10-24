@@ -38,7 +38,6 @@
     "axis",
     "cervical",
     "coccygeal",
-    "lumbar",
     "coccyx",
     "lumbar",
     "posterior",
@@ -442,12 +441,6 @@
 
   const stripParenthetical = (value) => value.replace(/\s*\([^)]*\)/g, "").trim();
 
-  const GROUPED_VIEWS = new Set(["vertebraes", "sacralc1c2"]);
-
-  const getDisplayLabel = (view, key) => (GROUPED_VIEWS.has(view) ? stripParenthetical(key) : key);
-
-  const buildCoordMap = (view) => {
-    if (GROUPED_VIEWS.has(view)) {
   const getDisplayLabel = (view, key) => (view === "vertebraes" ? stripParenthetical(key) : key);
 
   const buildCoordMap = (view) => {
@@ -616,15 +609,6 @@
     modeDrag.classList.toggle("primary", isDrag);
 
     promptBox.hidden = !isClick;
-    if (dragMessage) dragMessage.hidden = !isDrag;
-    if (dragPanel) dragPanel.hidden = !isDrag;
-    if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
-
-    if (typeForm) {
-      typeForm.hidden = !isType;
-      typeForm.setAttribute("aria-hidden", (!isType).toString());
-      typeForm.style.display = isType ? "flex" : "none";
-    }
     if (typeForm) {
       typeForm.hidden = !isType;
       typeForm.style.display = isType ? "flex" : "none";
@@ -637,9 +621,6 @@
       answerInput.disabled = !isType;
       answerInput.setAttribute("aria-disabled", (!isType).toString());
       if (!isType) {
-        if (answerInput.value) {
-          answerInput.value = "";
-        }
         answerInput.blur();
       }
     }
