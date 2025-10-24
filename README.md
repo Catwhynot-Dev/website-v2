@@ -8,6 +8,14 @@ This repository hosts the Physiology quiz experience and supporting pages deploy
 
 To explore locally, open `index.html` for the main site or `quiz/index.html` for the quiz interface.
 
+## File overview
+
+- `css/theme.css` – Site-wide typography, layout, header/footer, and component styling.
+- `css/quiz.css` – Quiz-specific layout, controls, dot styling, and celebration overlay rules.
+- `js/quiz-data.js` – Image sources, label banks, and coordinate maps shared by all quiz modes.
+- `js/quiz.js` – Quiz logic covering click/type/drag modes, review flows, and confetti celebration.
+- `quiz/index.html` – Physiology quiz entry point that wires the shared assets together.
+
 ## Deployment
 
 The production deployment is driven by Vercel. Push the latest updates to the `main` branch and Vercel will automatically build
