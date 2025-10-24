@@ -43,11 +43,13 @@
 
     <section class="bar" id="infobar">
       <div id="prompt">Find: <b id="target">—</b> <span id="wrongStreak" class="muted"></span></div>
+      <form id="typeForm" class="row" hidden aria-hidden="true">
       <form id="typeForm" class="row" hidden>
         <div>Type the name for the <b>highlighted dot</b>.</div>
         <label class="sr-only" for="answer">Answer</label>
         <input id="answer" class="btn input" placeholder="Type your answer..." />
         <button type="submit" class="btn">Submit</button>
+        <span id="typeWrong" class="muted" aria-live="polite"></span>
         <span id="typeWrong" class="muted"></span>
       </form>
       <div id="dragMessage" class="muted" hidden>
