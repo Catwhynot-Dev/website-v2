@@ -12,6 +12,12 @@
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/vertebraes.jpeg",
     sacralc1c2:
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/sacralc1c2.jpeg",
+    claviclescapula:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/clavicle%26scapula.png",
+    thoraciccage:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/thoraciccage.png",
+    pelvis:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/pelvis.png",
   };
 
   const SPINE_IMAGE_STRIP = [
@@ -27,6 +33,9 @@
     vertebralcolumn: SPINE_IMAGE_STRIP,
     vertebraes: SPINE_IMAGE_STRIP,
     sacralc1c2: SPINE_IMAGE_STRIP,
+    claviclescapula: [{ key: "claviclescapula", src: IMAGES.claviclescapula }],
+    thoraciccage: [{ key: "thoraciccage", src: IMAGES.thoraciccage }],
+    pelvis: [{ key: "pelvis", src: IMAGES.pelvis }],
   };
 
   const VIEW_LABELS = {
@@ -36,12 +45,17 @@
     vertebralcolumn: "Vertebral column",
     vertebraes: "Typical vertebra",
     sacralc1c2: "Sacrum / C1 / C2",
+    claviclescapula: "Clavicle & scapula",
+    thoraciccage: "Thoracic cage",
+    pelvis: "Pelvis & hip bones",
   };
 
   const SKULL_VIEWS = ["anterior", "inferior", "lateral"];
   const SPINE_VIEWS = ["vertebralcolumn", "vertebraes", "sacralc1c2"];
   const DEFAULT_SKULL_VIEW = "anterior";
   const DEFAULT_SPINE_VIEW = "vertebralcolumn";
+  const APPENDICULAR_VIEWS = ["claviclescapula", "thoraciccage", "pelvis"];
+  const DEFAULT_APPENDICULAR_VIEW = "claviclescapula";
 
   const LABELS = {
     anterior: [
@@ -161,6 +175,77 @@
       "Sacral foramina (anterior)",
       "Apex",
       "Coccyx",
+    ],
+    claviclescapula: [
+      "Acromion (clavicle)",
+      "Acromion (scapula)",
+      "Acromial end",
+      "Sternal end",
+      "Facet for articulation with acromion",
+      "Coracoid process",
+      "Glenoid cavity",
+      "Scapular spine (lateral)",
+      "Scapular spine (posterior)",
+      "Subscapular fossa",
+      "Supraspinous fossa",
+      "Infraspinous fossa",
+      "Body of scapula (anterior)",
+      "Body of scapula (posterior)",
+      "Lateral border (anterior)",
+      "Lateral border (lateral)",
+      "Lateral border (posterior)",
+      "Medial border (lateral)",
+      "Medial border (posterior)",
+      "Superior angle",
+      "Inferior angle",
+      "Lateral angle",
+      "Neck of scapula",
+    ],
+    thoraciccage: [
+      "Jugular notch (anterior)",
+      "Jugular notch (superior)",
+      "Manubrium (anterior)",
+      "Manubrium (lateral)",
+      "Body of sternum (anterior)",
+      "Body of sternum (lateral)",
+      "Xiphoid process (anterior)",
+      "Xiphoid process (lateral)",
+      "Sternum (anterior)",
+      "Sternum (lateral)",
+      "Costal cartilages (anterior)",
+      "Costal cartilages (lateral)",
+      "True ribs (1–7) (anterior)",
+      "True ribs (1–7) (lateral)",
+      "False ribs (8–12) (anterior)",
+      "False ribs (8–12) (lateral)",
+      "Floating ribs (11–12) (anterior)",
+      "Floating ribs (11–12) (lateral)",
+      "Vertebrochondral ribs (8–10)",
+      "T₁ vertebra",
+      "T₁₂ vertebra",
+    ],
+    pelvis: [
+      "Ilium (anterior)",
+      "Ilium (lateral)",
+      "Ilium (posterior)",
+      "Ischium (anterior)",
+      "Ischium (lateral)",
+      "Ischium (posterior)",
+      "Pubis (anterior)",
+      "Pubis (lateral)",
+      "Pubis (posterior)",
+      "Sacrum (anterior)",
+      "Sacrum (posterior)",
+      "Coccyx",
+      "Hip bone (lateral)",
+      "Hip bone (medial)",
+      "Pubic symphysis",
+      "Pubic tubercle",
+      "Acetabulum",
+      "Obturator foramen",
+      "Sacroiliac joint",
+      "Iliac crest",
+      "Ischial tuberosity",
     ],
   };
 
@@ -298,6 +383,9 @@
       Apex: { x: 93.9499, y: 81.6449 },
       Coccyx: { x: 81.9889, y: 84.114 },
     },
+    claviclescapula: {},
+    thoraciccage: {},
+    pelvis: {},
   };
 
   window.QUIZ_DATA = {
@@ -306,8 +394,10 @@
     VIEW_LABELS,
     SKULL_VIEWS,
     SPINE_VIEWS,
+    APPENDICULAR_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
+    DEFAULT_APPENDICULAR_VIEW,
     LABELS,
     COORDS,
   };

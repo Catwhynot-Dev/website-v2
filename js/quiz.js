@@ -1,6 +1,8 @@
 (function () {
   if (!window.QUIZ_DATA) {
-    console.error("Quiz data is missing. Ensure /js/quiz-data.js loads before /js/quiz.js.");
+    console.error(
+      "Quiz data is missing. Ensure /js/quiz-data.js loads before /js/quiz.js.",
+    );
     const stage = document.getElementById("stage");
     if (stage) {
       const message = document.createElement("div");
@@ -18,8 +20,10 @@
     VIEW_LABELS,
     SKULL_VIEWS,
     SPINE_VIEWS,
+    APPENDICULAR_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
+    DEFAULT_APPENDICULAR_VIEW,
     LABELS,
     COORDS,
   } = window.QUIZ_DATA;
@@ -58,7 +62,8 @@
       const remainder = words.slice(1).join(" ");
       if (
         (qualifier === "sacral" && /\b(foramina|hiatus)\b/.test(remainder)) ||
-        ((qualifier === "atlas" || qualifier === "axis") && /\barticulation\b/.test(remainder))
+        ((qualifier === "atlas" || qualifier === "axis") &&
+          /\barticulation\b/.test(remainder))
       ) {
         break;
       }
@@ -79,7 +84,7 @@
         .replace(/[–—−-]/g, "")
         .replace(/\s+/g, " ")
         .trim()
-        .replace(/\s+bone$/, "")
+        .replace(/\s+bone$/, ""),
     );
 
   const shuffle = (array) => {
@@ -91,14 +96,35 @@
     return clone;
   };
 
+  const fallbackPosition = (index, total) => {
+    if (total <= 1) {
+      return { x: 50, y: 50 };
+    }
+    const columns = Math.ceil(Math.sqrt(total));
+    const rows = Math.ceil(total / columns);
+    const column = index % columns;
+    const row = Math.floor(index / columns);
+    const x =
+      columns === 1 ? 50 : 10 + (80 / Math.max(columns - 1, 1)) * column;
+    const y = rows === 1 ? 50 : 10 + (80 / Math.max(rows - 1, 1)) * row;
+    return { x: Number(x.toFixed(4)), y: Number(y.toFixed(4)) };
+  };
+
   const makeDots = (labels, coords) =>
-    labels.map((key) => ({
-      key,
-      x: (coords[key]?.x) || 50,
-      y: (coords[key]?.y) || 50,
-      correct: false,
-      wrong: false,
-    }));
+    labels.map((key, index) => {
+      const preset = coords[key];
+      const position =
+        preset && typeof preset.x === "number" && typeof preset.y === "number"
+          ? preset
+          : fallbackPosition(index, labels.length);
+      return {
+        key,
+        x: position.x,
+        y: position.y,
+        correct: false,
+        wrong: false,
+      };
+    });
 
   const VIEW_KEYS = Object.keys(LABELS);
 
@@ -106,6 +132,7 @@
     view: DEFAULT_SKULL_VIEW,
     skullView: DEFAULT_SKULL_VIEW,
     spineView: DEFAULT_SPINE_VIEW,
+    appendicularView: DEFAULT_APPENDICULAR_VIEW,
     mode: "click",
     dots: {},
     order: {},
@@ -135,6 +162,9 @@
   const spineBtn = document.getElementById("spineBtn");
   const spineMenu = document.getElementById("spineMenu");
   const spineLabel = document.getElementById("spineLabel");
+  const appendBtn = document.getElementById("appendBtn");
+  const appendMenu = document.getElementById("appendMenu");
+  const appendLabel = document.getElementById("appendLabel");
   const modeClick = document.getElementById("modeClick");
   const modeType = document.getElementById("modeType");
   const modeDrag = document.getElementById("modeDrag");
@@ -211,8 +241,14 @@
       const shard = document.createElement("span");
       shard.className = "confetti-piece";
       shard.style.setProperty("--left", `${Math.random() * 100}%`);
-      shard.style.setProperty("--delay", `${(Math.random() * 0.8).toFixed(2)}s`);
-      shard.style.setProperty("--duration", `${(2.2 + Math.random() * 1.8).toFixed(2)}s`);
+      shard.style.setProperty(
+        "--delay",
+        `${(Math.random() * 0.8).toFixed(2)}s`,
+      );
+      shard.style.setProperty(
+        "--duration",
+        `${(2.2 + Math.random() * 1.8).toFixed(2)}s`,
+      );
       shard.style.setProperty("--hue", `${Math.floor(Math.random() * 360)}`);
       confettiBox.appendChild(shard);
     }
@@ -271,11 +307,19 @@
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
 
-  const stripParenthetical = (value) => value.replace(/\s*\([^)]*\)/g, "").trim();
+  const stripParenthetical = (value) =>
+    value.replace(/\s*\([^)]*\)/g, "").trim();
 
-  const GROUPED_VIEWS = new Set(["vertebraes", "sacralc1c2"]);
+  const GROUPED_VIEWS = new Set([
+    "vertebraes",
+    "sacralc1c2",
+    "claviclescapula",
+    "thoraciccage",
+    "pelvis",
+  ]);
 
-  const getDisplayLabel = (view, key) => (GROUPED_VIEWS.has(view) ? stripParenthetical(key) : key);
+  const getDisplayLabel = (view, key) =>
+    GROUPED_VIEWS.has(view) ? stripParenthetical(key) : key;
 
   const buildCoordMap = (view) => {
     if (GROUPED_VIEWS.has(view)) {
@@ -385,7 +429,10 @@
 
   const markMissedIfNeeded = (label) => {
     const view = state.view;
-    const hadWrong = state.mode === "click" ? state.wrongStreak[view] > 0 : state.typeWrong[view] > 0;
+    const hadWrong =
+      state.mode === "click"
+        ? state.wrongStreak[view] > 0
+        : state.typeWrong[view] > 0;
     if (hadWrong && !state.review[view].includes(label)) {
       state.review[view].push(label);
     }
@@ -415,6 +462,9 @@
     if (SPINE_VIEWS.includes(view) && state.spineView !== view) {
       state.spineView = view;
     }
+    if (APPENDICULAR_VIEWS.includes(view) && state.appendicularView !== view) {
+      state.appendicularView = view;
+    }
 
     const activeLabel = VIEW_LABELS[view] || view;
 
@@ -423,6 +473,10 @@
     }
     if (spineLabel) {
       spineLabel.textContent = VIEW_LABELS[state.spineView] || state.spineView;
+    }
+    if (appendLabel) {
+      appendLabel.textContent =
+        VIEW_LABELS[state.appendicularView] || state.appendicularView;
     }
     if (dragViewLabel) {
       dragViewLabel.textContent = activeLabel;
@@ -436,6 +490,11 @@
       const spineActive = state.view === state.spineView;
       spineBtn.classList.toggle("primary", spineActive);
       spineBtn.setAttribute("aria-pressed", spineActive ? "true" : "false");
+    }
+    if (appendBtn) {
+      const appendActive = state.view === state.appendicularView;
+      appendBtn.classList.toggle("primary", appendActive);
+      appendBtn.setAttribute("aria-pressed", appendActive ? "true" : "false");
     }
 
     modeClick.classList.toggle("primary", isClick);
@@ -466,7 +525,9 @@
 
     if (isClick) {
       const currentTarget = state.order[view][0];
-      targetEl.textContent = currentTarget ? getDisplayLabel(view, currentTarget) : "—";
+      targetEl.textContent = currentTarget
+        ? getDisplayLabel(view, currentTarget)
+        : "—";
       wrongStreakEl.textContent = wrong > 0 ? `Wrong ×${wrong}` : "";
     } else {
       targetEl.textContent = "—";
@@ -495,13 +556,17 @@
 
     const reviewList = state.review[view];
     const allCorrect = dots.every((dot) => dot.correct);
-    const showReviewButton = !isDrag && allCorrect && reviewList.length > 0 && !state.inReview;
+    const showReviewButton =
+      !isDrag && allCorrect && reviewList.length > 0 && !state.inReview;
     startReviewBtn.hidden = !showReviewButton;
     reviewCount.textContent = reviewList.length ? `(${reviewList.length})` : "";
     reviewBadge.hidden = isDrag || !state.inReview;
 
     const viewCompleted =
-      allCorrect && !state.inReview && reviewList.length === 0 && state.mode !== "drag";
+      allCorrect &&
+      !state.inReview &&
+      reviewList.length === 0 &&
+      state.mode !== "drag";
     if (viewCompleted) {
       if (!state.completedViews.has(view)) {
         triggerCelebration(view);
@@ -666,7 +731,9 @@
           coordOutput.setSelectionRange(0, coordOutput.value.length);
           const successful = document.execCommand("copy");
           if (copyStatus) {
-            copyStatus.textContent = successful ? "Copied!" : "Press Ctrl+C to copy.";
+            copyStatus.textContent = successful
+              ? "Copied!"
+              : "Press Ctrl+C to copy.";
           }
         } catch (fallbackError) {
           if (copyStatus) {
@@ -685,8 +752,9 @@
   if (viewBtn && viewMenu) {
     viewBtn.addEventListener("click", () => {
       viewMenu.hidden = !viewMenu.hidden;
-      if (!viewMenu.hidden && spineMenu) {
-        spineMenu.hidden = true;
+      if (!viewMenu.hidden) {
+        if (spineMenu) spineMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
       }
     });
   }
@@ -709,8 +777,19 @@
   if (spineBtn && spineMenu) {
     spineBtn.addEventListener("click", () => {
       spineMenu.hidden = !spineMenu.hidden;
-      if (!spineMenu.hidden && viewMenu) {
-        viewMenu.hidden = true;
+      if (!spineMenu.hidden) {
+        if (viewMenu) viewMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
+      }
+    });
+  }
+
+  if (appendBtn && appendMenu) {
+    appendBtn.addEventListener("click", () => {
+      appendMenu.hidden = !appendMenu.hidden;
+      if (!appendMenu.hidden) {
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
       }
     });
   }
@@ -725,17 +804,52 @@
         hideCelebration();
         spineMenu.hidden = true;
         if (viewMenu) viewMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
+        render();
+      });
+    });
+  }
+
+  if (appendMenu) {
+    appendMenu.querySelectorAll(".menu-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selectedView = btn.getAttribute("data-view");
+        state.appendicularView = selectedView;
+        state.view = selectedView;
+        state.inReview = false;
+        hideCelebration();
+        appendMenu.hidden = true;
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
         render();
       });
     });
   }
 
   document.addEventListener("click", (event) => {
-    if (viewBtn && viewMenu && !viewBtn.contains(event.target) && !viewMenu.contains(event.target)) {
+    if (
+      viewBtn &&
+      viewMenu &&
+      !viewBtn.contains(event.target) &&
+      !viewMenu.contains(event.target)
+    ) {
       viewMenu.hidden = true;
     }
-    if (spineBtn && spineMenu && !spineBtn.contains(event.target) && !spineMenu.contains(event.target)) {
+    if (
+      spineBtn &&
+      spineMenu &&
+      !spineBtn.contains(event.target) &&
+      !spineMenu.contains(event.target)
+    ) {
       spineMenu.hidden = true;
+    }
+    if (
+      appendBtn &&
+      appendMenu &&
+      !appendBtn.contains(event.target) &&
+      !appendMenu.contains(event.target)
+    ) {
+      appendMenu.hidden = true;
     }
   });
 
@@ -743,6 +857,7 @@
     if (event.key === "Escape") {
       if (viewMenu) viewMenu.hidden = true;
       if (spineMenu) spineMenu.hidden = true;
+      if (appendMenu) appendMenu.hidden = true;
     }
   });
 
