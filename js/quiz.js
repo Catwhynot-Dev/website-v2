@@ -110,6 +110,8 @@
     return { x: Number(x.toFixed(4)), y: Number(y.toFixed(4)) };
   };
 
+  const toCoord = (value) => Number(Number(value).toFixed(4));
+
   const makeDots = (labels, coords) =>
     labels.map((key, index) => {
       const preset = coords[key];
@@ -119,8 +121,8 @@
           : fallbackPosition(index, labels.length);
       return {
         key,
-        x: position.x,
-        y: position.y,
+        x: toCoord(position.x),
+        y: toCoord(position.y),
         correct: false,
         wrong: false,
       };
@@ -134,6 +136,7 @@
     spineView: DEFAULT_SPINE_VIEW,
     appendicularView: DEFAULT_APPENDICULAR_VIEW,
     mode: "click",
+    labels: {},
     dots: {},
     order: {},
     wrongStreak: {},
@@ -143,15 +146,51 @@
     completedViews: new Set(),
   };
 
-  const initViewState = (key) => {
-    state.dots[key] = makeDots(LABELS[key], COORDS[key] || {});
-    state.order[key] = shuffle(LABELS[key]);
+  VIEW_KEYS.forEach((key) => {
+    state.labels[key] = [...(LABELS[key] || [])];
+  });
+
+  const initViewState = (key, options = {}) => {
+    const { preservePositions = false } = options;
+    const labels = state.labels[key] || [];
+    const coords = COORDS[key] || {};
+    if (preservePositions && state.dots[key]) {
+      const existing = state.dots[key];
+      state.dots[key] = labels.map((label, index) => {
+        const found = existing.find((dot) => dot.key === label);
+        if (found) {
+          return {
+            key: found.key,
+            x: toCoord(found.x),
+            y: toCoord(found.y),
+            correct: false,
+            wrong: false,
+          };
+        }
+        const preset = coords[label];
+        const fallback = fallbackPosition(index, labels.length);
+        const position =
+          preset && typeof preset.x === "number" && typeof preset.y === "number"
+            ? preset
+            : fallback;
+        return {
+          key: label,
+          x: toCoord(position.x),
+          y: toCoord(position.y),
+          correct: false,
+          wrong: false,
+        };
+      });
+    } else {
+      state.dots[key] = makeDots(labels, coords);
+    }
+    state.order[key] = shuffle(labels);
     state.wrongStreak[key] = 0;
     state.typeWrong[key] = 0;
     state.review[key] = [];
   };
 
-  VIEW_KEYS.forEach(initViewState);
+  VIEW_KEYS.forEach((key) => initViewState(key));
 
   const wrap = document.querySelector(".wrap");
   const stage = document.getElementById("stage");
@@ -186,6 +225,11 @@
   const copyStatus = document.getElementById("copyStatus");
   const wordList = document.getElementById("wordList");
   const wordCount = document.getElementById("wordCount");
+  const wordEditor = document.getElementById("wordEditor");
+  const addWordForm = document.getElementById("addWordForm");
+  const newWordInput = document.getElementById("newWord");
+  const wordEditorList = document.getElementById("wordEditorList");
+  const wordEditorStatus = document.getElementById("wordEditorStatus");
   const good = document.getElementById("good");
   const bad = document.getElementById("bad");
   const celebration = document.getElementById("celebration");
@@ -216,7 +260,7 @@
 
   const resetView = (view) => {
     if (!VIEW_KEYS.includes(view)) return;
-    initViewState(view);
+    initViewState(view, { preservePositions: true });
     state.completedViews.delete(view);
   };
 
@@ -368,6 +412,130 @@
     coordOutput.value = JSON.stringify(buildCoordMap(state.view), null, 2);
   };
 
+  const showEditorMessage = (message) => {
+    if (!wordEditorStatus) return;
+    wordEditorStatus.textContent = message || "";
+  };
+
+  const renderWordManager = (view, isDrag) => {
+    if (!wordEditor) return;
+    if (!isDrag) {
+      wordEditor.hidden = true;
+      if (wordEditorList) {
+        wordEditorList.innerHTML = "";
+      }
+      showEditorMessage("");
+      return;
+    }
+    wordEditor.hidden = false;
+    if (!wordEditorList) return;
+    wordEditorList.innerHTML = "";
+    if (!state.dots[view].length) {
+      const empty = document.createElement("li");
+      empty.className = "editor-item";
+      const label = document.createElement("span");
+      label.className = "editor-label";
+      label.textContent = "No labels yet. Add one above.";
+      empty.appendChild(label);
+      wordEditorList.appendChild(empty);
+      return;
+    }
+    state.dots[view].forEach((dot, index) => {
+      const item = document.createElement("li");
+      item.className = "editor-item";
+
+      const label = document.createElement("span");
+      label.className = "editor-label";
+      label.textContent = getDisplayLabel(view, dot.key);
+      item.appendChild(label);
+
+      const removeBtn = document.createElement("button");
+      removeBtn.type = "button";
+      removeBtn.className = "btn btn-ghost remove-btn";
+      removeBtn.dataset.index = String(index);
+      removeBtn.textContent = "Remove";
+      removeBtn.addEventListener("click", () => {
+        const removeIndex = Number(removeBtn.dataset.index);
+        const removed = removeLabelFromView(view, removeIndex);
+        if (removed) {
+          showEditorMessage(
+            `Removed \u201c${getDisplayLabel(view, dot.key)}\u201d.`,
+          );
+          render();
+        }
+      });
+      item.appendChild(removeBtn);
+
+      wordEditorList.appendChild(item);
+    });
+  };
+
+  const addLabelToView = (view, label) => {
+    const labels = state.labels[view];
+    if (!labels) return { ok: false, message: "Unknown view." };
+    const trimmed = label.trim();
+    if (!trimmed) {
+      return { ok: false, message: "Enter a label name first." };
+    }
+    const duplicate = labels.some(
+      (existing) => existing.trim().toLowerCase() === trimmed.toLowerCase(),
+    );
+    if (duplicate) {
+      return { ok: false, message: "That label is already in this list." };
+    }
+    if (!state.dots[view]) {
+      state.dots[view] = [];
+    }
+    if (!state.order[view]) {
+      state.order[view] = [];
+    }
+    if (!state.review[view]) {
+      state.review[view] = [];
+    }
+    const dot = {
+      key: trimmed,
+      x: toCoord(50),
+      y: toCoord(50),
+      correct: false,
+      wrong: false,
+    };
+    labels.push(trimmed);
+    state.dots[view].push(dot);
+    state.order[view].push(trimmed);
+    state.review[view] = state.review[view].filter((item) => item !== trimmed);
+    state.completedViews.delete(view);
+    state.inReview = false;
+    state.wrongStreak[view] = 0;
+    state.typeWrong[view] = 0;
+    return { ok: true, message: `Added \u201c${trimmed}\u201d.` };
+  };
+
+  const removeLabelFromView = (view, index) => {
+    const labels = state.labels[view];
+    const dots = state.dots[view] || [];
+    state.dots[view] = dots;
+    if (!labels || !dots) return false;
+    if (Number.isNaN(index) || index < 0 || index >= labels.length)
+      return false;
+    const [removed] = labels.splice(index, 1);
+    dots.splice(index, 1);
+    const orderList = state.order[view] || [];
+    const orderIndex = orderList.indexOf(removed);
+    if (orderIndex !== -1) {
+      orderList.splice(orderIndex, 1);
+    }
+    state.order[view] = orderList;
+    state.review[view] = state.review[view].filter((item) => item !== removed);
+    if (state.inReview && state.review[view].length === 0) {
+      state.inReview = false;
+    }
+    state.completedViews.delete(view);
+    state.inReview = false;
+    state.wrongStreak[view] = 0;
+    state.typeWrong[view] = 0;
+    return true;
+  };
+
   let dragState = null;
 
   if (playAgainBtn) {
@@ -447,8 +615,11 @@
 
   const render = () => {
     const { view, mode } = state;
-    const dots = state.dots[view];
-    const labels = LABELS[view];
+    const dots = state.dots[view] || [];
+    state.dots[view] = dots;
+    const labels = state.labels[view] || [];
+    const order = state.order[view] || [];
+    state.order[view] = order;
     const wrong = state.wrongStreak[view];
     const tWrong = state.typeWrong[view];
     const isClick = mode === "click";
@@ -524,7 +695,7 @@
     }
 
     if (isClick) {
-      const currentTarget = state.order[view][0];
+      const currentTarget = order[0];
       targetEl.textContent = currentTarget
         ? getDisplayLabel(view, currentTarget)
         : "—";
@@ -552,7 +723,9 @@
     }
 
     const correctCount = dots.filter((dot) => dot.correct).length;
-    progressEl.textContent = `${correctCount}/${labels.length}`;
+    if (progressEl) {
+      progressEl.textContent = `${correctCount}/${labels.length}`;
+    }
 
     const reviewList = state.review[view];
     const allCorrect = dots.every((dot) => dot.correct);
@@ -579,13 +752,19 @@
 
     renderBackgrounds();
 
-    wordList.innerHTML = "";
-    labels.forEach((label) => {
-      const li = document.createElement("li");
-      li.textContent = `• ${getDisplayLabel(view, label)}`;
-      wordList.appendChild(li);
-    });
-    wordCount.textContent = labels.length;
+    if (wordList) {
+      wordList.innerHTML = "";
+      labels.forEach((label) => {
+        const li = document.createElement("li");
+        li.textContent = `• ${getDisplayLabel(view, label)}`;
+        wordList.appendChild(li);
+      });
+    }
+    if (wordCount) {
+      wordCount.textContent = labels.length;
+    }
+
+    renderWordManager(view, isDrag);
 
     stage.classList.toggle("drag-mode", isDrag);
     stage.querySelectorAll(".dot, .badge").forEach((el) => el.remove());
@@ -604,7 +783,7 @@
       el.addEventListener("click", () => {
         if (!isClick) return;
         if (dot.correct) return;
-        const currentTarget = state.order[view][0];
+        const currentTarget = order[0];
         if (!currentTarget) return;
         const ok = norm(dot.key) === norm(currentTarget);
         if (ok) {
@@ -745,6 +924,24 @@
         setTimeout(() => {
           copyStatus.textContent = "";
         }, 2500);
+      }
+    });
+  }
+
+  if (addWordForm) {
+    addWordForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!newWordInput) return;
+      if (state.mode !== "drag") {
+        showEditorMessage("Switch to drag mode to manage labels.");
+        return;
+      }
+      const value = newWordInput.value.trim();
+      const result = addLabelToView(state.view, value);
+      showEditorMessage(result.message);
+      if (result.ok) {
+        newWordInput.value = "";
+        render();
       }
     });
   }

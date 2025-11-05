@@ -353,6 +353,69 @@ body {
   gap: 12px;
 }
 
+.panel-subtitle {
+  margin: 0;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.small {
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+
+.word-editor {
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.add-word {
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.editor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.editor-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--panel-alt);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+
+.editor-label {
+  flex: 1;
+  text-transform: none;
+  letter-spacing: 0.04em;
+}
+
+.word-editor .btn {
+  padding: 0.45rem 1.1rem;
+  font-size: 0.78rem;
+}
+
+.remove-btn {
+  border-color: var(--border);
+}
+
 details {
   background: var(--panel);
   border: 2px solid var(--border);

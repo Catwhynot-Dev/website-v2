@@ -139,6 +139,25 @@
             aria-live="polite"
           ></span>
         </div>
+        <div id="wordEditor" class="word-editor" hidden>
+          <h3 class="panel-subtitle">Manage word list</h3>
+          <p class="muted small">
+            Add a new label to drop a dot in the center, then drag it into
+            place. Remove a label to delete its dot from this diagram.
+          </p>
+          <form id="addWordForm" class="row add-word">
+            <label class="sr-only" for="newWord">New label</label>
+            <input
+              id="newWord"
+              class="btn input"
+              placeholder="Add new label"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn">Add label</button>
+          </form>
+          <p id="wordEditorStatus" class="muted small" aria-live="polite"></p>
+          <ul id="wordEditorList" class="editor-list"></ul>
+        </div>
       </section>
 
       <details open>
