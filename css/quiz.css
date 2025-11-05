@@ -55,7 +55,10 @@ body {
   background: var(--panel);
   color: var(--text);
   cursor: pointer;
-  transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+  transition:
+    background 0.15s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
   box-shadow: 0 2px 0 var(--shadow);
 }
 
@@ -148,7 +151,13 @@ body {
   overflow: hidden;
   width: 100%;
   min-height: 300px;
+  max-height: 85vh;
+  margin-bottom: 20px;
   box-shadow: 0 16px 40px var(--shadow);
+}
+
+.imgbox.single {
+  max-height: min(80vh, 960px);
 }
 
 .quiz-error {
@@ -177,7 +186,7 @@ body {
 
 .imgbox.multi {
   aspect-ratio: 49 / 27;
-  max-height: min(85vh, 1200px);
+  max-height: min(80vh, 1100px);
   background: linear-gradient(90deg, #0f0f0f 0%, #181818 100%);
 }
 
@@ -194,6 +203,7 @@ body {
 
 .bg-strip.single {
   padding: 0;
+  justify-content: center;
 }
 
 .bg-image {
@@ -220,6 +230,11 @@ body {
 .bg-strip.single .bg-image {
   border: none;
   background: #0f0f0f;
+  flex: 0 1 auto;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
 }
 
 .bg-image.active {
@@ -235,7 +250,11 @@ body {
   border: 2px solid var(--border);
   background: var(--panel);
   transform: translate(-50%, -50%);
-  transition: transform 0.12s ease, background 0.12s ease, opacity 0.12s ease, box-shadow 0.12s ease;
+  transition:
+    transform 0.12s ease,
+    background 0.12s ease,
+    opacity 0.12s ease,
+    box-shadow 0.12s ease;
   z-index: 1;
   box-shadow: 0 0 0 2px var(--panel);
 }
@@ -255,13 +274,16 @@ body {
   100% {
     background: var(--text);
     border-color: var(--text);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.35),
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0.35),
       0 0 0 6px rgba(255, 255, 255, 0.08);
   }
   50% {
     background: var(--bg);
     border-color: var(--bg);
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.65), 0 0 0 6px rgba(255, 255, 255, 0.02);
+    box-shadow:
+      0 0 0 2px rgba(0, 0, 0, 0.65),
+      0 0 0 6px rgba(255, 255, 255, 0.02);
   }
 }
 
@@ -319,7 +341,9 @@ body {
   color: var(--text);
   padding: 12px;
   min-height: 180px;
-  font-family: "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family:
+    "Fira Code", "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   font-size: 0.9rem;
   resize: vertical;
 }
