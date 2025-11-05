@@ -393,8 +393,7 @@
       "Sternal end": { x: 76.2172, y: 13.5364 },
       "Facet for articulation with acromion": { x: 34.4569, y: 17.9659 },
       "Coracoid process": [
-        { x: 8.3333, y: 45.2426 },
-        { x: 21.2547, y: 45.0872 },
+        { x: 8.5206, y: 45.7477 },
         { x: 54.8689, y: 51.071 },
         { x: 84.5506, y: 44.6598 },
       ],
@@ -413,7 +412,10 @@
       ],
       "Medial border": { x: 66.8539, y: 74.3844 },
       "Inferior angle": { x: 64.6067, y: 89.4215 },
-      "Superior border": { x: 72.0974, y: 47.302 },
+      "Superior border": [
+        { x: 72.0974, y: 47.302 },
+        { x: 21.2547, y: 45.1649 },
+      ],
       Neck: { x: 86.1423, y: 52.0035 },
     },
     thoraciccage: {
