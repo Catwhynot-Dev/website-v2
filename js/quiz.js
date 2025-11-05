@@ -112,21 +112,44 @@
 
   const toCoord = (value) => Number(Number(value).toFixed(4));
 
-  const makeDots = (labels, coords) =>
-    labels.map((key, index) => {
+  const makeDots = (labels, coords) => {
+    const usage = {};
+    return labels.map((key, index) => {
+      const instance = usage[key] || 0;
+      usage[key] = instance + 1;
       const preset = coords[key];
-      const position =
-        preset && typeof preset.x === "number" && typeof preset.y === "number"
-          ? preset
-          : fallbackPosition(index, labels.length);
+      let position;
+      if (Array.isArray(preset)) {
+        position = preset[instance] || preset[preset.length - 1];
+      } else if (
+        preset &&
+        typeof preset.x === "number" &&
+        typeof preset.y === "number"
+      ) {
+        position = preset;
+      } else {
+        position = fallbackPosition(index, labels.length);
+      }
       return {
         key,
+        instance,
         x: toCoord(position.x),
         y: toCoord(position.y),
         correct: false,
         wrong: false,
       };
     });
+  };
+
+  const reindexInstances = (view) => {
+    const dots = state.dots[view] || [];
+    const seen = {};
+    dots.forEach((dot) => {
+      const next = seen[dot.key] || 0;
+      dot.instance = next;
+      seen[dot.key] = next + 1;
+    });
+  };
 
   const VIEW_KEYS = Object.keys(LABELS);
 
@@ -155,26 +178,50 @@
     const labels = state.labels[key] || [];
     const coords = COORDS[key] || {};
     if (preservePositions && state.dots[key]) {
-      const existing = state.dots[key];
+      reindexInstances(key);
+      const existing = state.dots[key].map((dot) => ({
+        ...dot,
+        instance:
+          typeof dot.instance === "number" && Number.isFinite(dot.instance)
+            ? dot.instance
+            : 0,
+      }));
+      const existingUsage = {};
       state.dots[key] = labels.map((label, index) => {
-        const found = existing.find((dot) => dot.key === label);
-        if (found) {
+        const instance = existingUsage[label] || 0;
+        existingUsage[label] = instance + 1;
+        const foundIndex = existing.findIndex(
+          (dot) => dot.key === label && dot.instance === instance,
+        );
+        let position;
+        if (foundIndex !== -1) {
+          const found = existing[foundIndex];
+          position = { x: found.x, y: found.y };
           return {
-            key: found.key,
-            x: toCoord(found.x),
-            y: toCoord(found.y),
+            key: label,
+            instance,
+            x: toCoord(position.x),
+            y: toCoord(position.y),
             correct: false,
             wrong: false,
           };
         }
         const preset = coords[label];
         const fallback = fallbackPosition(index, labels.length);
-        const position =
-          preset && typeof preset.x === "number" && typeof preset.y === "number"
-            ? preset
-            : fallback;
+        if (Array.isArray(preset)) {
+          position = preset[instance] || preset[preset.length - 1] || fallback;
+        } else if (
+          preset &&
+          typeof preset.x === "number" &&
+          typeof preset.y === "number"
+        ) {
+          position = preset;
+        } else {
+          position = fallback;
+        }
         return {
           key: label,
+          instance,
           x: toCoord(position.x),
           y: toCoord(position.y),
           correct: false,
@@ -470,6 +517,13 @@
     });
   };
 
+  const toTitleCase = (value) =>
+    value
+      .toLowerCase()
+      .replace(/\s+/g, " ")
+      .trim()
+      .replace(/\b([a-z])/g, (match) => match.toUpperCase());
+
   const addLabelToView = (view, label) => {
     const labels = state.labels[view];
     if (!labels) return { ok: false, message: "Unknown view." };
@@ -477,12 +531,7 @@
     if (!trimmed) {
       return { ok: false, message: "Enter a label name first." };
     }
-    const duplicate = labels.some(
-      (existing) => existing.trim().toLowerCase() === trimmed.toLowerCase(),
-    );
-    if (duplicate) {
-      return { ok: false, message: "That label is already in this list." };
-    }
+    const formatted = toTitleCase(trimmed);
     if (!state.dots[view]) {
       state.dots[view] = [];
     }
@@ -492,22 +541,29 @@
     if (!state.review[view]) {
       state.review[view] = [];
     }
+    const existingCount = state.dots[view].filter(
+      (dot) => dot.key === formatted,
+    ).length;
     const dot = {
-      key: trimmed,
+      key: formatted,
+      instance: existingCount,
       x: toCoord(50),
       y: toCoord(50),
       correct: false,
       wrong: false,
     };
-    labels.push(trimmed);
+    labels.push(formatted);
     state.dots[view].push(dot);
-    state.order[view].push(trimmed);
-    state.review[view] = state.review[view].filter((item) => item !== trimmed);
+    state.order[view].push(formatted);
+    state.review[view] = state.review[view].filter(
+      (item) => item !== formatted,
+    );
     state.completedViews.delete(view);
     state.inReview = false;
     state.wrongStreak[view] = 0;
     state.typeWrong[view] = 0;
-    return { ok: true, message: `Added \u201c${trimmed}\u201d.` };
+    reindexInstances(view);
+    return { ok: true, message: `Added \u201c${formatted}\u201d.` };
   };
 
   const removeLabelFromView = (view, index) => {
@@ -518,7 +574,7 @@
     if (Number.isNaN(index) || index < 0 || index >= labels.length)
       return false;
     const [removed] = labels.splice(index, 1);
-    dots.splice(index, 1);
+    const [removedDot] = dots.splice(index, 1);
     const orderList = state.order[view] || [];
     const orderIndex = orderList.indexOf(removed);
     if (orderIndex !== -1) {
@@ -533,6 +589,9 @@
     state.inReview = false;
     state.wrongStreak[view] = 0;
     state.typeWrong[view] = 0;
+    if (removedDot) {
+      reindexInstances(view);
+    }
     return true;
   };
 
