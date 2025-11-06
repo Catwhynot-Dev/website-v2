@@ -199,6 +199,7 @@
       "Medial border",
       "Inferior angle",
       "Superior border",
+      "Superior border",
       "Neck",
     ],
     thoraciccage: [
