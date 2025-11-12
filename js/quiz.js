@@ -555,6 +555,9 @@
     labels.push(formatted);
     state.dots[view].push(dot);
     state.order[view].push(formatted);
+    if (!state.inReview) {
+      state.order[view] = shuffle(state.order[view]);
+    }
     state.review[view] = state.review[view].filter(
       (item) => item !== formatted,
     );
@@ -667,7 +670,9 @@
 
   const advanceOrder = () => {
     const view = state.view;
-    state.order[view] = state.order[view].slice(1);
+    const current = state.order[view] || [];
+    const remaining = current.slice(1);
+    state.order[view] = state.inReview ? remaining : shuffle(remaining);
     state.wrongStreak[view] = 0;
     state.typeWrong[view] = 0;
   };
