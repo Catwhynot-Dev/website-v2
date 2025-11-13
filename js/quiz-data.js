@@ -18,12 +18,21 @@
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/thoraciccage.png",
     pelvis:
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/pelvis.png",
+    upperlimbhumerus:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/humerus.jpeg",
+    upperlimbradiusulna:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/radius%26ulna.jpeg",
   };
 
   const SPINE_IMAGE_STRIP = [
     { key: "vertebralcolumn", src: IMAGES.vertebralcolumn },
     { key: "vertebraes", src: IMAGES.vertebraes },
     { key: "sacralc1c2", src: IMAGES.sacralc1c2 },
+  ];
+
+  const UPPER_IMAGE_STRIP = [
+    { key: "upperlimb-humerus", src: IMAGES.upperlimbhumerus },
+    { key: "upperlimb-radiusulna", src: IMAGES.upperlimbradiusulna },
   ];
 
   const BACKGROUND_LAYOUTS = {
@@ -36,6 +45,7 @@
     claviclescapula: [{ key: "claviclescapula", src: IMAGES.claviclescapula }],
     thoraciccage: [{ key: "thoraciccage", src: IMAGES.thoraciccage }],
     pelvis: [{ key: "pelvis", src: IMAGES.pelvis }],
+    upperlimb: UPPER_IMAGE_STRIP,
   };
 
   const VIEW_LABELS = {
@@ -48,6 +58,9 @@
     claviclescapula: "Clavicle & scapula",
     thoraciccage: "Thoracic cage",
     pelvis: "Pelvis & hip bones",
+    upperlimb: "Humerus & forearm",
+    "upperlimb-humerus": "Humerus",
+    "upperlimb-radiusulna": "Radius & ulna",
   };
 
   const SKULL_VIEWS = ["anterior", "inferior", "lateral"];
@@ -56,6 +69,8 @@
   const DEFAULT_SPINE_VIEW = "vertebralcolumn";
   const APPENDICULAR_VIEWS = ["claviclescapula", "thoraciccage", "pelvis"];
   const DEFAULT_APPENDICULAR_VIEW = "claviclescapula";
+  const UPPER_VIEWS = ["upperlimb"];
+  const DEFAULT_UPPER_VIEW = "upperlimb";
 
   const LABELS = {
     anterior: [
@@ -245,6 +260,37 @@
       "Sacroiliac joint",
       "Iliac crest",
       "Ischial tuberosity",
+    ],
+    upperlimb: [
+      "Greater tubercle",
+      "Lesser tubercle",
+      "Head",
+      "Anatomical neck",
+      "Surgical neck",
+      "Intertubercular groove",
+      "Deltoid tuberosity",
+      "Groove for radial nerve",
+      "Lateral epicondyle",
+      "Medial epicondyle",
+      "Olecranon fossa",
+      "Coronoid fossa",
+      "Radial fossa",
+      "Capitulum",
+      "Trochlea",
+      "Condyle",
+      "Head of radius",
+      "Neck of radius",
+      "Radial tuberosity",
+      "Interosseous membrane",
+      "Styloid process of radius",
+      "Olecranon",
+      "Trochlear notch",
+      "Coronoid process",
+      "Radial notch",
+      "Ulnar tuberosity",
+      "Distal radio-ulnar joint",
+      "Ulnar head",
+      "Styloid process of ulna",
     ],
   };
 
@@ -490,6 +536,7 @@
       "Iliac crest": { x: 94.0075, y: 4.8886 },
       "Ischial tuberosity": { x: 19.6629, y: 88.2648 },
     },
+    upperlimb: {},
   };
 
   window.QUIZ_DATA = {
@@ -499,9 +546,11 @@
     SKULL_VIEWS,
     SPINE_VIEWS,
     APPENDICULAR_VIEWS,
+    UPPER_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
     DEFAULT_APPENDICULAR_VIEW,
+    DEFAULT_UPPER_VIEW,
     LABELS,
     COORDS,
   };

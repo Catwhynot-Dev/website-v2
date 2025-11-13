@@ -21,9 +21,11 @@
     SKULL_VIEWS,
     SPINE_VIEWS,
     APPENDICULAR_VIEWS,
+    UPPER_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
     DEFAULT_APPENDICULAR_VIEW,
+    DEFAULT_UPPER_VIEW,
     LABELS,
     COORDS,
   } = window.QUIZ_DATA;
@@ -158,6 +160,7 @@
     skullView: DEFAULT_SKULL_VIEW,
     spineView: DEFAULT_SPINE_VIEW,
     appendicularView: DEFAULT_APPENDICULAR_VIEW,
+    upperView: DEFAULT_UPPER_VIEW,
     mode: "click",
     labels: {},
     dots: {},
@@ -251,6 +254,9 @@
   const appendBtn = document.getElementById("appendBtn");
   const appendMenu = document.getElementById("appendMenu");
   const appendLabel = document.getElementById("appendLabel");
+  const upperBtn = document.getElementById("upperBtn");
+  const upperMenu = document.getElementById("upperMenu");
+  const upperLabel = document.getElementById("upperLabel");
   const modeClick = document.getElementById("modeClick");
   const modeType = document.getElementById("modeType");
   const modeDrag = document.getElementById("modeDrag");
@@ -700,6 +706,9 @@
     if (APPENDICULAR_VIEWS.includes(view) && state.appendicularView !== view) {
       state.appendicularView = view;
     }
+    if (UPPER_VIEWS.includes(view) && state.upperView !== view) {
+      state.upperView = view;
+    }
 
     const activeLabel = VIEW_LABELS[view] || view;
 
@@ -712,6 +721,9 @@
     if (appendLabel) {
       appendLabel.textContent =
         VIEW_LABELS[state.appendicularView] || state.appendicularView;
+    }
+    if (upperLabel) {
+      upperLabel.textContent = VIEW_LABELS[state.upperView] || state.upperView;
     }
     if (dragViewLabel) {
       dragViewLabel.textContent = activeLabel;
@@ -730,6 +742,11 @@
       const appendActive = state.view === state.appendicularView;
       appendBtn.classList.toggle("primary", appendActive);
       appendBtn.setAttribute("aria-pressed", appendActive ? "true" : "false");
+    }
+    if (upperBtn) {
+      const upperActive = state.view === state.upperView;
+      upperBtn.classList.toggle("primary", upperActive);
+      upperBtn.setAttribute("aria-pressed", upperActive ? "true" : "false");
     }
 
     modeClick.classList.toggle("primary", isClick);
@@ -1016,6 +1033,7 @@
       if (!viewMenu.hidden) {
         if (spineMenu) spineMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
       }
     });
   }
@@ -1041,6 +1059,7 @@
       if (!spineMenu.hidden) {
         if (viewMenu) viewMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
       }
     });
   }
@@ -1051,6 +1070,18 @@
       if (!appendMenu.hidden) {
         if (viewMenu) viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
+      }
+    });
+  }
+
+  if (upperBtn && upperMenu) {
+    upperBtn.addEventListener("click", () => {
+      upperMenu.hidden = !upperMenu.hidden;
+      if (!upperMenu.hidden) {
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
       }
     });
   }
@@ -1082,6 +1113,24 @@
         appendMenu.hidden = true;
         if (viewMenu) viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
+        render();
+      });
+    });
+  }
+
+  if (upperMenu) {
+    upperMenu.querySelectorAll(".menu-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selectedView = btn.getAttribute("data-view");
+        state.upperView = selectedView;
+        state.view = selectedView;
+        state.inReview = false;
+        hideCelebration();
+        upperMenu.hidden = true;
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
         render();
       });
     });
@@ -1112,6 +1161,14 @@
     ) {
       appendMenu.hidden = true;
     }
+    if (
+      upperBtn &&
+      upperMenu &&
+      !upperBtn.contains(event.target) &&
+      !upperMenu.contains(event.target)
+    ) {
+      upperMenu.hidden = true;
+    }
   });
 
   document.addEventListener("keydown", (event) => {
@@ -1119,6 +1176,7 @@
       if (viewMenu) viewMenu.hidden = true;
       if (spineMenu) spineMenu.hidden = true;
       if (appendMenu) appendMenu.hidden = true;
+      if (upperMenu) upperMenu.hidden = true;
     }
   });
 
