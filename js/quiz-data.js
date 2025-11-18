@@ -22,6 +22,11 @@
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/humerus.jpeg",
     upperlimbradiusulna:
       "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/radius%26ulna.jpeg",
+    hand: "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/hand.png",
+    footsuperior:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/footsuperior.png",
+    footmedial:
+      "https://raw.githubusercontent.com/Catwhynot-Dev/stuffsforschool/main/footmedial.png",
   };
 
   const SPINE_IMAGE_STRIP = [
@@ -35,6 +40,11 @@
     { key: "upperlimb-radiusulna", src: IMAGES.upperlimbradiusulna },
   ];
 
+  const DISTAL_IMAGE_STRIP = [
+    { key: "handfoot-hand", src: IMAGES.hand },
+    { key: "handfoot-footsuperior", src: IMAGES.footsuperior },
+  ];
+
   const BACKGROUND_LAYOUTS = {
     anterior: [{ key: "anterior", src: IMAGES.anterior }],
     inferior: [{ key: "inferior", src: IMAGES.inferior }],
@@ -46,6 +56,8 @@
     thoraciccage: [{ key: "thoraciccage", src: IMAGES.thoraciccage }],
     pelvis: [{ key: "pelvis", src: IMAGES.pelvis }],
     upperlimb: UPPER_IMAGE_STRIP,
+    handfoot: DISTAL_IMAGE_STRIP,
+    footmedial: [{ key: "footmedial", src: IMAGES.footmedial }],
   };
 
   const VIEW_LABELS = {
@@ -61,6 +73,10 @@
     upperlimb: "Humerus & forearm",
     "upperlimb-humerus": "Humerus",
     "upperlimb-radiusulna": "Radius & ulna",
+    handfoot: "Hand & superior foot",
+    footmedial: "Foot medial",
+    "handfoot-hand": "Hand",
+    "handfoot-footsuperior": "Superior foot",
   };
 
   const SKULL_VIEWS = ["anterior", "inferior", "lateral"];
@@ -71,6 +87,8 @@
   const DEFAULT_APPENDICULAR_VIEW = "claviclescapula";
   const UPPER_VIEWS = ["upperlimb"];
   const DEFAULT_UPPER_VIEW = "upperlimb";
+  const DISTAL_VIEWS = ["handfoot", "footmedial"];
+  const DEFAULT_DISTAL_VIEW = "handfoot";
 
   const LABELS = {
     anterior: [
@@ -295,6 +313,46 @@
       "Styloid process of ulna",
       "Ulna",
       "Radius",
+    ],
+    handfoot: [
+      "Ulna",
+      "Styloid process of ulna",
+      "Radius",
+      "Styloid process of radius",
+      "Lunate",
+      "Triquetrum",
+      "Pisiform",
+      "Scaphoid",
+      "Trapezium",
+      "Trapezoid",
+      "Capitate",
+      "Hamate",
+      "Metacarpal bones",
+      "Proximal",
+      "Middle",
+      "Distal",
+      "Calcaneus",
+      "Trochlea of talus",
+      "Talus",
+      "Navicular",
+      "Cuboid",
+      "Cuneiform bones",
+      "Lateral",
+      "Intermediate",
+      "Medial",
+      "Metatarsal bones",
+      "Phalanges",
+      "Hallux",
+      "Proximal phalanx",
+      "Distal phalanx",
+    ],
+    footmedial: [
+      "Phalanges",
+      "Metatarsal bones",
+      "Medial cuneiform bone",
+      "Navicular",
+      "Talus",
+      "Calcaneus",
     ],
   };
 
@@ -577,6 +635,8 @@
       Ulna: { x: 73.1328, y: 44.8061 },
       Radius: { x: 62.3444, y: 45.2691 },
     },
+    handfoot: {},
+    footmedial: {},
   };
 
   window.QUIZ_DATA = {
@@ -587,10 +647,12 @@
     SPINE_VIEWS,
     APPENDICULAR_VIEWS,
     UPPER_VIEWS,
+    DISTAL_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
     DEFAULT_APPENDICULAR_VIEW,
     DEFAULT_UPPER_VIEW,
+    DEFAULT_DISTAL_VIEW,
     LABELS,
     COORDS,
   };

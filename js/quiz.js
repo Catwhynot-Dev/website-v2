@@ -22,10 +22,12 @@
     SPINE_VIEWS,
     APPENDICULAR_VIEWS,
     UPPER_VIEWS,
+    DISTAL_VIEWS,
     DEFAULT_SKULL_VIEW,
     DEFAULT_SPINE_VIEW,
     DEFAULT_APPENDICULAR_VIEW,
     DEFAULT_UPPER_VIEW,
+    DEFAULT_DISTAL_VIEW,
     LABELS,
     COORDS,
   } = window.QUIZ_DATA;
@@ -161,6 +163,7 @@
     spineView: DEFAULT_SPINE_VIEW,
     appendicularView: DEFAULT_APPENDICULAR_VIEW,
     upperView: DEFAULT_UPPER_VIEW,
+    distalView: DEFAULT_DISTAL_VIEW,
     mode: "click",
     labels: {},
     dots: {},
@@ -257,6 +260,9 @@
   const upperBtn = document.getElementById("upperBtn");
   const upperMenu = document.getElementById("upperMenu");
   const upperLabel = document.getElementById("upperLabel");
+  const distalBtn = document.getElementById("distalBtn");
+  const distalMenu = document.getElementById("distalMenu");
+  const distalLabel = document.getElementById("distalLabel");
   const modeClick = document.getElementById("modeClick");
   const modeType = document.getElementById("modeType");
   const modeDrag = document.getElementById("modeDrag");
@@ -413,6 +419,7 @@
     "claviclescapula",
     "thoraciccage",
     "pelvis",
+    "handfoot",
   ]);
 
   const getDisplayLabel = (view, key) =>
@@ -709,6 +716,9 @@
     if (UPPER_VIEWS.includes(view) && state.upperView !== view) {
       state.upperView = view;
     }
+    if (DISTAL_VIEWS.includes(view) && state.distalView !== view) {
+      state.distalView = view;
+    }
 
     const activeLabel = VIEW_LABELS[view] || view;
 
@@ -724,6 +734,10 @@
     }
     if (upperLabel) {
       upperLabel.textContent = VIEW_LABELS[state.upperView] || state.upperView;
+    }
+    if (distalLabel) {
+      distalLabel.textContent =
+        VIEW_LABELS[state.distalView] || state.distalView;
     }
     if (dragViewLabel) {
       dragViewLabel.textContent = activeLabel;
@@ -747,6 +761,11 @@
       const upperActive = state.view === state.upperView;
       upperBtn.classList.toggle("primary", upperActive);
       upperBtn.setAttribute("aria-pressed", upperActive ? "true" : "false");
+    }
+    if (distalBtn) {
+      const distalActive = state.view === state.distalView;
+      distalBtn.classList.toggle("primary", distalActive);
+      distalBtn.setAttribute("aria-pressed", distalActive ? "true" : "false");
     }
 
     modeClick.classList.toggle("primary", isClick);
@@ -1034,6 +1053,7 @@
         if (spineMenu) spineMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
         if (upperMenu) upperMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
       }
     });
   }
@@ -1048,6 +1068,7 @@
         hideCelebration();
         viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
         render();
       });
     });
@@ -1060,6 +1081,7 @@
         if (viewMenu) viewMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
         if (upperMenu) upperMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
       }
     });
   }
@@ -1082,6 +1104,19 @@
         if (viewMenu) viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
+      }
+    });
+  }
+
+  if (distalBtn && distalMenu) {
+    distalBtn.addEventListener("click", () => {
+      distalMenu.hidden = !distalMenu.hidden;
+      if (!distalMenu.hidden) {
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
       }
     });
   }
@@ -1097,6 +1132,7 @@
         spineMenu.hidden = true;
         if (viewMenu) viewMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
         render();
       });
     });
@@ -1114,6 +1150,7 @@
         if (viewMenu) viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
         if (upperMenu) upperMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
         render();
       });
     });
@@ -1131,6 +1168,25 @@
         if (viewMenu) viewMenu.hidden = true;
         if (spineMenu) spineMenu.hidden = true;
         if (appendMenu) appendMenu.hidden = true;
+        if (distalMenu) distalMenu.hidden = true;
+        render();
+      });
+    });
+  }
+
+  if (distalMenu) {
+    distalMenu.querySelectorAll(".menu-item").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const selectedView = btn.getAttribute("data-view");
+        state.distalView = selectedView;
+        state.view = selectedView;
+        state.inReview = false;
+        hideCelebration();
+        distalMenu.hidden = true;
+        if (viewMenu) viewMenu.hidden = true;
+        if (spineMenu) spineMenu.hidden = true;
+        if (appendMenu) appendMenu.hidden = true;
+        if (upperMenu) upperMenu.hidden = true;
         render();
       });
     });
@@ -1169,6 +1225,14 @@
     ) {
       upperMenu.hidden = true;
     }
+    if (
+      distalBtn &&
+      distalMenu &&
+      !distalBtn.contains(event.target) &&
+      !distalMenu.contains(event.target)
+    ) {
+      distalMenu.hidden = true;
+    }
   });
 
   document.addEventListener("keydown", (event) => {
@@ -1177,6 +1241,7 @@
       if (spineMenu) spineMenu.hidden = true;
       if (appendMenu) appendMenu.hidden = true;
       if (upperMenu) upperMenu.hidden = true;
+      if (distalMenu) distalMenu.hidden = true;
     }
   });
 
