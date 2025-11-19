@@ -306,6 +306,21 @@
     return null;
   };
 
+  const findActiveDotIndex = (view) => {
+    const dots = state.dots[view] || [];
+    const order = state.order[view] || [];
+    const currentTarget = order[0];
+    if (currentTarget) {
+      const targetIdx = dots.findIndex(
+        (dot) => !dot.correct && dot.key === currentTarget,
+      );
+      if (targetIdx !== -1) {
+        return targetIdx;
+      }
+    }
+    return firstUnansweredIndex(dots);
+  };
+
   const flashBadge = (text, x, y, color = "") => {
     const badge = document.createElement("div");
     badge.className = "badge";
@@ -702,7 +717,7 @@
     const isClick = mode === "click";
     const isType = mode === "type";
     const isDrag = mode === "drag";
-    const activeIdx = firstUnansweredIndex(dots);
+    const activeIdx = findActiveDotIndex(view);
 
     if (SKULL_VIEWS.includes(view) && state.skullView !== view) {
       state.skullView = view;
@@ -925,11 +940,13 @@
     if (state.mode !== "type") return;
     const view = state.view;
     const dots = state.dots[view];
-    const idx = firstUnansweredIndex(dots);
+    const idx = findActiveDotIndex(view);
     if (idx === null) return;
     const dot = dots[idx];
+    const order = state.order[view] || [];
+    const currentTarget = order[0] || dot.key;
     const userAnswer = norm(answerInput.value);
-    const ok = userAnswer === norm(dot.key);
+    const ok = userAnswer === norm(currentTarget);
     if (ok) {
       dot.correct = true;
       dot.wrong = false;
@@ -942,7 +959,8 @@
         // ignore autoplay issues
       }
       flashBadge("Correct!", dot.x, dot.y, "#86efac");
-      markMissedIfNeeded(dot.key);
+      markMissedIfNeeded(currentTarget);
+      advanceOrder();
     } else {
       state.typeWrong[view] += 1;
       try {
