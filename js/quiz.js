@@ -416,32 +416,6 @@
     celebration.hidden = false;
   };
 
-  const applySingleAspectRatio = (img) => {
-    if (!stage) return;
-    const { naturalWidth, naturalHeight } = img;
-    if (naturalWidth && naturalHeight) {
-      stage.style.aspectRatio = `${naturalWidth} / ${naturalHeight}`;
-    }
-  };
-
-  const updateMultiAspectRatio = () => {
-    if (!stage || !bgStrip) return;
-    const images = Array.from(bgStrip.querySelectorAll(".bg-image"));
-    let totalWidth = 0;
-    let maxHeight = 0;
-
-    images.forEach((img) => {
-      if (img.naturalWidth && img.naturalHeight) {
-        totalWidth += img.naturalWidth;
-        maxHeight = Math.max(maxHeight, img.naturalHeight);
-      }
-    });
-
-    if (totalWidth && maxHeight) {
-      stage.style.aspectRatio = `${totalWidth} / ${maxHeight}`;
-    }
-  };
-
   const renderBackgrounds = () => {
     if (!bgStrip || !stage) return;
     const backgrounds = BACKGROUND_LAYOUTS[state.view] || [];
@@ -452,10 +426,6 @@
     if (wrap) {
       wrap.classList.toggle("spine-mode", isMulti);
     }
-    if (isMulti) {
-      stage.style.removeProperty("aspect-ratio");
-    }
-
     bgStrip.innerHTML = "";
     bgStrip.classList.toggle("single", !isMulti);
 
@@ -468,27 +438,8 @@
       img.draggable = false;
       img.alt = `${VIEW_LABELS[key] || key} diagram`;
       img.src = src;
-      if (!isMulti) {
-        const updateAspect = () => applySingleAspectRatio(img);
-        if (img.complete && img.naturalWidth) {
-          updateAspect();
-        } else {
-          img.addEventListener("load", updateAspect, { once: true });
-        }
-      } else {
-        const updateAspect = () => updateMultiAspectRatio();
-        if (img.complete && img.naturalWidth) {
-          updateAspect();
-        } else {
-          img.addEventListener("load", updateAspect, { once: true });
-        }
-      }
       bgStrip.appendChild(img);
     });
-
-    if (!backgrounds.length && !isMulti) {
-      stage.style.removeProperty("aspect-ratio");
-    }
   };
 
   const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
