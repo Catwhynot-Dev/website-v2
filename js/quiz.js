@@ -173,6 +173,8 @@
     review: {},
     inReview: false,
     completedViews: new Set(),
+    studyQueue: [],
+    studyTotal: 0,
   };
 
   VIEW_KEYS.forEach((key) => {
@@ -265,6 +267,7 @@
   const distalLabel = document.getElementById("distalLabel");
   const modeClick = document.getElementById("modeClick");
   const modeType = document.getElementById("modeType");
+  const modeStudy = document.getElementById("modeStudy");
   const modeDrag = document.getElementById("modeDrag");
   const promptBox = document.getElementById("prompt");
   const targetEl = document.getElementById("target");
@@ -308,6 +311,17 @@
 
   const findActiveDotIndex = (view) => {
     const dots = state.dots[view] || [];
+    if (state.mode === "study" && state.studyQueue.length) {
+      const target = state.studyQueue[0];
+      if (target.view === view) {
+        const targetIdx = dots.findIndex(
+          (dot) => dot.key === target.key && dot.instance === target.instance,
+        );
+        if (targetIdx !== -1) {
+          return targetIdx;
+        }
+      }
+    }
     const order = state.order[view] || [];
     const currentTarget = order[0];
     if (currentTarget) {
@@ -341,6 +355,35 @@
   const hideCelebration = () => {
     if (celebration) celebration.hidden = true;
     if (confettiBox) confettiBox.innerHTML = "";
+  };
+
+  const triggerStudyCelebration = () => {
+    if (!celebration || !confettiBox) return;
+    confettiBox.innerHTML = "";
+    if (celebrationTitle) {
+      celebrationTitle.textContent = "Study session complete!";
+    }
+    if (celebrationMessage) {
+      celebrationMessage.textContent =
+        "You cycled through every term across all diagrams.";
+    }
+    const pieces = 140;
+    for (let i = 0; i < pieces; i += 1) {
+      const shard = document.createElement("span");
+      shard.className = "confetti-piece";
+      shard.style.setProperty("--left", `${Math.random() * 100}%`);
+      shard.style.setProperty(
+        "--delay",
+        `${(Math.random() * 0.8).toFixed(2)}s`,
+      );
+      shard.style.setProperty(
+        "--duration",
+        `${(2.2 + Math.random() * 1.8).toFixed(2)}s`,
+      );
+      shard.style.setProperty("--hue", `${Math.floor(Math.random() * 360)}`);
+      confettiBox.appendChild(shard);
+    }
+    celebration.hidden = false;
   };
 
   const triggerCelebration = (view) => {
@@ -439,6 +482,40 @@
 
   const getDisplayLabel = (view, key) =>
     GROUPED_VIEWS.has(view) ? stripParenthetical(key) : key;
+
+  const selectView = (view) => {
+    state.view = view;
+    if (SKULL_VIEWS.includes(view)) state.skullView = view;
+    if (SPINE_VIEWS.includes(view)) state.spineView = view;
+    if (APPENDICULAR_VIEWS.includes(view)) state.appendicularView = view;
+    if (UPPER_VIEWS.includes(view)) state.upperView = view;
+    if (DISTAL_VIEWS.includes(view)) state.distalView = view;
+  };
+
+  const buildStudyQueue = () => {
+    const queue = [];
+    VIEW_KEYS.forEach((key) => {
+      (state.dots[key] || []).forEach((dot) => {
+        queue.push({ view: key, key: dot.key, instance: dot.instance });
+      });
+    });
+    return shuffle(queue);
+  };
+
+  const advanceStudyQueue = () => {
+    if (!state.studyQueue.length) return;
+    const finished = state.studyQueue.shift();
+    if (finished) {
+      state.wrongStreak[finished.view] = 0;
+      state.typeWrong[finished.view] = 0;
+    }
+    if (!state.studyQueue.length) {
+      triggerStudyCelebration();
+      return;
+    }
+    const next = state.studyQueue[0];
+    selectView(next.view);
+  };
 
   const buildCoordMap = (view) => {
     if (GROUPED_VIEWS.has(view)) {
@@ -630,6 +707,19 @@
 
   if (playAgainBtn) {
     playAgainBtn.addEventListener("click", () => {
+      if (state.mode === "study") {
+        VIEW_KEYS.forEach((key) => resetView(key));
+        state.completedViews.clear();
+        state.inReview = false;
+        state.studyQueue = buildStudyQueue();
+        state.studyTotal = state.studyQueue.length;
+        if (state.studyQueue[0]) {
+          selectView(state.studyQueue[0].view);
+        }
+        hideCelebration();
+        render();
+        return;
+      }
       const currentView = state.view;
       resetView(currentView);
       state.inReview = false;
@@ -688,9 +778,9 @@
   const markMissedIfNeeded = (label) => {
     const view = state.view;
     const hadWrong =
-      state.mode === "click"
-        ? state.wrongStreak[view] > 0
-        : state.typeWrong[view] > 0;
+      state.mode === "type"
+        ? state.typeWrong[view] > 0
+        : state.wrongStreak[view] > 0;
     if (hadWrong && !state.review[view].includes(label)) {
       state.review[view].push(label);
     }
@@ -706,7 +796,14 @@
   };
 
   const render = () => {
-    const { view, mode } = state;
+    let { view, mode } = state;
+    if (mode === "study" && state.studyQueue[0]) {
+      const queuedView = state.studyQueue[0].view;
+      if (queuedView !== view) {
+        selectView(queuedView);
+        view = queuedView;
+      }
+    }
     const dots = state.dots[view] || [];
     state.dots[view] = dots;
     const labels = state.labels[view] || [];
@@ -715,6 +812,7 @@
     const wrong = state.wrongStreak[view];
     const tWrong = state.typeWrong[view];
     const isClick = mode === "click";
+    const isStudy = mode === "study";
     const isType = mode === "type";
     const isDrag = mode === "drag";
     const activeIdx = findActiveDotIndex(view);
@@ -786,8 +884,10 @@
     modeClick.classList.toggle("primary", isClick);
     modeType.classList.toggle("primary", isType);
     modeDrag.classList.toggle("primary", isDrag);
+    if (modeStudy) modeStudy.classList.toggle("primary", isStudy);
 
-    promptBox.hidden = !isClick;
+    const promptActive = isClick || isStudy;
+    promptBox.hidden = !promptActive;
     if (dragMessage) dragMessage.hidden = !isDrag;
     if (dragPanel) dragPanel.hidden = !isDrag;
     if (copyCoordsBtn) copyCoordsBtn.disabled = !isDrag;
@@ -809,8 +909,8 @@
       }
     }
 
-    if (isClick) {
-      const currentTarget = order[0];
+    if (promptActive) {
+      const currentTarget = isStudy ? state.studyQueue[0]?.key : order[0];
       targetEl.textContent = currentTarget
         ? getDisplayLabel(view, currentTarget)
         : "—";
@@ -839,7 +939,14 @@
 
     const correctCount = dots.filter((dot) => dot.correct).length;
     if (progressEl) {
-      progressEl.textContent = `${correctCount}/${labels.length}`;
+      if (isStudy) {
+        const remaining = state.studyQueue.length;
+        const completed = Math.max(state.studyTotal - remaining, 0);
+        const total = state.studyTotal || remaining || labels.length;
+        progressEl.textContent = `${completed}/${total}`;
+      } else {
+        progressEl.textContent = `${correctCount}/${labels.length}`;
+      }
     }
 
     const reviewList = state.review[view];
@@ -854,7 +961,8 @@
       allCorrect &&
       !state.inReview &&
       reviewList.length === 0 &&
-      state.mode !== "drag";
+      state.mode !== "drag" &&
+      state.mode !== "study";
     if (viewCompleted) {
       if (!state.completedViews.has(view)) {
         triggerCelebration(view);
@@ -886,7 +994,7 @@
     dots.forEach((dot, index) => {
       const classes = ["dot"];
       if (dot.correct) classes.push("correct");
-      if (dot.wrong && isClick) classes.push("wrong");
+      if (dot.wrong && promptActive) classes.push("wrong");
       if (isType && activeIdx === index) classes.push("active");
       if (isDrag) classes.push("draggable");
 
@@ -896,14 +1004,19 @@
       el.style.top = `${dot.y}%`;
       el.title = getDisplayLabel(view, dot.key);
       el.addEventListener("click", () => {
-        if (!isClick) return;
-        if (dot.correct) return;
-        const currentTarget = order[0];
+        if (!promptActive) return;
+        const studyTarget = isStudy ? state.studyQueue[0] : null;
+        const currentTarget = isStudy ? studyTarget?.key : order[0];
         if (!currentTarget) return;
-        const ok = norm(dot.key) === norm(currentTarget);
+        const matchesInstance = isStudy
+          ? studyTarget && dot.instance === studyTarget.instance
+          : true;
+        const ok = matchesInstance && norm(dot.key) === norm(currentTarget);
         if (ok) {
           dot.correct = true;
           dot.wrong = false;
+          state.wrongStreak[view] = 0;
+          state.typeWrong[view] = 0;
           try {
             good.currentTime = 0;
             void good.play();
@@ -912,7 +1025,11 @@
           }
           flashBadge("Correct!", dot.x, dot.y, "#86efac");
           markMissedIfNeeded(currentTarget);
-          advanceOrder();
+          if (isStudy) {
+            advanceStudyQueue();
+          } else {
+            advanceOrder();
+          }
         } else {
           dot.wrong = true;
           state.wrongStreak[view] += 1;
@@ -994,18 +1111,38 @@
   modeClick.addEventListener("click", () => {
     hideCelebration();
     state.mode = "click";
+    state.studyQueue = [];
+    state.studyTotal = 0;
     render();
   });
 
   modeType.addEventListener("click", () => {
     hideCelebration();
     state.mode = "type";
+    state.studyQueue = [];
+    state.studyTotal = 0;
     render();
   });
+
+  if (modeStudy) {
+    modeStudy.addEventListener("click", () => {
+      hideCelebration();
+      state.mode = "study";
+      state.inReview = false;
+      state.studyQueue = buildStudyQueue();
+      state.studyTotal = state.studyQueue.length;
+      if (state.studyQueue[0]) {
+        selectView(state.studyQueue[0].view);
+      }
+      render();
+    });
+  }
 
   modeDrag.addEventListener("click", () => {
     hideCelebration();
     state.mode = "drag";
+    state.studyQueue = [];
+    state.studyTotal = 0;
     state.inReview = false;
     if (copyStatus) {
       copyStatus.textContent = "";
@@ -1080,8 +1217,7 @@
     viewMenu.querySelectorAll(".menu-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const selectedView = btn.getAttribute("data-view");
-        state.skullView = selectedView;
-        state.view = selectedView;
+        selectView(selectedView);
         state.inReview = false;
         hideCelebration();
         viewMenu.hidden = true;
@@ -1143,8 +1279,7 @@
     spineMenu.querySelectorAll(".menu-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const selectedView = btn.getAttribute("data-view");
-        state.spineView = selectedView;
-        state.view = selectedView;
+        selectView(selectedView);
         state.inReview = false;
         hideCelebration();
         spineMenu.hidden = true;
@@ -1160,8 +1295,7 @@
     appendMenu.querySelectorAll(".menu-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const selectedView = btn.getAttribute("data-view");
-        state.appendicularView = selectedView;
-        state.view = selectedView;
+        selectView(selectedView);
         state.inReview = false;
         hideCelebration();
         appendMenu.hidden = true;
@@ -1178,8 +1312,7 @@
     upperMenu.querySelectorAll(".menu-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const selectedView = btn.getAttribute("data-view");
-        state.upperView = selectedView;
-        state.view = selectedView;
+        selectView(selectedView);
         state.inReview = false;
         hideCelebration();
         upperMenu.hidden = true;
@@ -1196,8 +1329,7 @@
     distalMenu.querySelectorAll(".menu-item").forEach((btn) => {
       btn.addEventListener("click", () => {
         const selectedView = btn.getAttribute("data-view");
-        state.distalView = selectedView;
-        state.view = selectedView;
+        selectView(selectedView);
         state.inReview = false;
         hideCelebration();
         distalMenu.hidden = true;
