@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Physiology Quiz</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Special+Elite&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/css/theme.css" />
+    <link rel="stylesheet" href="/css/quiz.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="row header">
+        <h1>Physiology — Quiz</h1>
+        <div class="row controls">
+          <div class="menu">
+            <button id="viewBtn" class="btn">
+              View: <span id="viewLabel">anterior</span> ▾
+            </button>
+            <div id="viewMenu" class="menu-list" hidden>
+              <button class="menu-item" data-view="anterior">Anterior</button>
+              <button class="menu-item" data-view="inferior">Inferior</button>
+              <button class="menu-item" data-view="lateral">Lateral</button>
+            </div>
+          </div>
+          <div class="menu">
+            <button id="spineBtn" class="btn">
+              Spine: <span id="spineLabel">vertebral column</span> ▾
+            </button>
+            <div id="spineMenu" class="menu-list" hidden>
+              <button class="menu-item" data-view="vertebralcolumn">
+                Vertebral column
+              </button>
+              <button class="menu-item" data-view="vertebraes">
+                Typical vertebra
+              </button>
+              <button class="menu-item" data-view="sacralc1c2">
+                Sacrum / C1 / C2
+              </button>
+            </div>
+          </div>
+          <div class="menu">
+            <button id="appendBtn" class="btn">
+              Appendicular:
+              <span id="appendLabel">clavicle &amp; scapula</span> ▾
+            </button>
+            <div id="appendMenu" class="menu-list" hidden>
+              <button class="menu-item" data-view="claviclescapula">
+                Clavicle &amp; scapula
+              </button>
+              <button class="menu-item" data-view="thoraciccage">
+                Thoracic cage
+              </button>
+              <button class="menu-item" data-view="pelvis">
+                Pelvis &amp; hip bones
+              </button>
+            </div>
+          </div>
+          <div class="menu">
+            <button id="upperBtn" class="btn">
+              Upper limb:
+              <span id="upperLabel">humerus &amp; forearm</span> ▾
+            </button>
+            <div id="upperMenu" class="menu-list" hidden>
+              <button class="menu-item" data-view="upperlimb">
+                Humerus &amp; forearm
+              </button>
+            </div>
+          </div>
+          <div class="menu">
+            <button id="distalBtn" class="btn">
+              Hands &amp; feet:
+              <span id="distalLabel">hand &amp; superior foot</span> ▾
+            </button>
+            <div id="distalMenu" class="menu-list" hidden>
+              <button class="menu-item" data-view="handfoot">
+                Hand &amp; superior foot
+              </button>
+              <button class="menu-item" data-view="footmedial">
+                Foot medial
+              </button>
+            </div>
+          </div>
+          <button id="modeClick" class="btn primary">Click</button>
+          <button id="modeType" class="btn">Type</button>
+          <button id="modeStudy" class="btn">Study</button>
+          <button id="modeDrag" class="btn">Drag</button>
+        </div>
+      </header>
+
+      <section class="bar" id="infobar">
+        <div id="prompt">
+          Find: <b id="target">—</b>
+          <span id="wrongStreak" class="muted"></span>
+        </div>
+        <form id="typeForm" class="row" hidden aria-hidden="true">
+          <div>Type the name for the <b>highlighted dot</b>.</div>
+          <label class="sr-only" for="answer">Answer</label>
+          <input
+            id="answer"
+            class="btn input"
+            placeholder="Type your answer..."
+          />
+          <button type="submit" class="btn">Submit</button>
+          <span id="typeWrong" class="muted" aria-live="polite"></span>
+        </form>
+        <div id="dragMessage" class="muted" hidden>
+          Drag each landmark dot to its correct spot. The coordinate JSON
+          updates below.
+        </div>
+        <div>Progress: <span id="progress">0/0</span></div>
+        <button id="startReview" class="btn review" hidden>
+          Start Review <span id="reviewCount"></span>
+        </button>
+        <span id="reviewBadge" class="muted" hidden>Review mode</span>
+      </section>
+
+      <section id="stage" class="imgbox">
+        <div id="bgStrip" class="bg-strip" aria-hidden="true"></div>
+      </section>
+
+      <div id="celebration" class="celebration" hidden>
+        <div id="confetti" class="confetti" aria-hidden="true"></div>
+        <div
+          class="celebration-card"
+          role="dialog"
+          aria-labelledby="celebrationTitle"
+          aria-modal="true"
+        >
+          <h2 id="celebrationTitle">Great work!</h2>
+          <p id="celebrationMessage">You've completed this diagram.</p>
+          <button id="playAgain" class="btn primary">Play again</button>
+        </div>
+      </div>
+
+      <section id="dragPanel" class="panel" hidden>
+        <header class="row panel-head">
+          <h2 class="panel-title">Drag mode coordinate export</h2>
+          <span class="muted"
+            >View: <span id="dragViewLabel">anterior</span></span
+          >
+        </header>
+        <p id="dragInstructions" class="muted">
+          Position the dots directly over each structure. Copy the generated
+          JSON and paste it into your dataset when you are satisfied.
+        </p>
+        <label class="sr-only" for="coordOutput">Coordinate JSON</label>
+        <textarea
+          id="coordOutput"
+          class="coord-output"
+          readonly
+          spellcheck="false"
+        ></textarea>
+        <div class="row panel-actions">
+          <button id="copyCoords" class="btn">Copy JSON</button>
+          <span
+            id="copyStatus"
+            class="muted"
+            role="status"
+            aria-live="polite"
+          ></span>
+        </div>
+        <div id="wordEditor" class="word-editor" hidden>
+          <h3 class="panel-subtitle">Manage word list</h3>
+          <p class="muted small">
+            Add a new label to drop a dot in the center, then drag it into
+            place. Remove a label to delete its dot from this diagram.
+          </p>
+          <form id="addWordForm" class="row add-word">
+            <label class="sr-only" for="newWord">New label</label>
+            <input
+              id="newWord"
+              class="btn input"
+              placeholder="Add new label"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn">Add label</button>
+          </form>
+          <p id="wordEditorStatus" class="muted small" aria-live="polite"></p>
+          <ul id="wordEditorList" class="editor-list"></ul>
+        </div>
+      </section>
+
+      <details open>
+        <summary>Word list (<span id="wordCount">0</span>)</summary>
+        <ul id="wordList"></ul>
+      </details>
+    </div>
+
+    <audio
+      id="good"
+      preload="auto"
+      src="https://www.myinstants.com/media/sounds/pop_7e9Is8L.mp3"
+    ></audio>
+    <audio
+      id="bad"
+      preload="auto"
+      src="https://www.myinstants.com/media/sounds/pluh.mp3"
+    ></audio>
+
+    <script src="/js/quiz-data.js"></script>
+    <script src="/js/quiz.js"></script>
+  </body>
+</html>
