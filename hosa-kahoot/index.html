@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HOSA Clinical Nursing Next Step Trainer</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>HOSA Clinical Nursing — Next Step Trainer</h1>
+      <p>Practice each skill in order. Questions are not shuffled.</p>
+    </header>
+
+    <section class="skills" id="skills"></section>
+
+    <section class="quiz-card" id="quizCard">
+      <div class="meta">
+        <span id="skillName">Select a skill to begin</span>
+        <span id="progress">Step 0/0</span>
+      </div>
+
+      <h2>What is the next step?</h2>
+      <p class="current-step"><strong>Current step:</strong> <span id="currentStep">—</span></p>
+
+      <div class="choices" id="choices"></div>
+
+      <p id="feedback" class="feedback" aria-live="polite"></p>
+
+      <footer class="scoreboard">
+        <div>Score: <span id="score">0</span></div>
+        <div>Correct: <span id="correctCount">0</span></div>
+        <div>Attempts: <span id="attempts">0</span></div>
+      </footer>
+    </section>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
