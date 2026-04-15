@@ -350,7 +350,8 @@ const ui = {
   score: document.getElementById("score"),
   correctCount: document.getElementById("correctCount"),
   attempts: document.getElementById("attempts"),
-  accuracy: document.getElementById("accuracy")
+  accuracy: document.getElementById("accuracy"),
+  overviewList: document.getElementById("overviewList")
 };
 
 const state = {
@@ -361,6 +362,53 @@ const state = {
   firstTryCorrect: 0,
   missedSteps: new Set()
 };
+
+function getSubsteps(stepText) {
+  const text = stepText.replace(/\s+/g, " ").trim();
+  const parts = text.includes(":")
+    ? text.split(":")[1].split(/;|\bOR\b/)
+    : text.split(/;|\bOR\b/);
+
+  const cleaned = parts
+    .map((part) => part.replace(/^\s*(and|then)\s+/i, "").trim())
+    .filter((part) => part.length > 20);
+
+  return cleaned.length > 1 ? cleaned : [];
+}
+
+function renderOverview() {
+  if (state.skillIndex < 0) {
+    ui.overviewList.innerHTML = "";
+    return;
+  }
+
+  const skill = skills[state.skillIndex];
+  const completedSteps = skill.steps.slice(0, state.stepIndex + 1);
+
+  ui.overviewList.innerHTML = "";
+
+  completedSteps.forEach((stepText) => {
+    const li = document.createElement("li");
+    li.textContent = stepText;
+
+    const substeps = getSubsteps(stepText);
+    if (substeps.length) {
+      const sub = document.createElement("ol");
+      sub.className = "substeps";
+      sub.type = "a";
+
+      substeps.forEach((substep) => {
+        const subLi = document.createElement("li");
+        subLi.textContent = substep;
+        sub.appendChild(subLi);
+      });
+
+      li.appendChild(sub);
+    }
+
+    ui.overviewList.appendChild(li);
+  });
+}
 
 function buildSkillButtons() {
   skills.forEach((skill, index) => {
@@ -387,6 +435,7 @@ function startSkill(index) {
   ui.feedback.textContent = "";
   ui.feedback.className = "feedback";
   renderQuestion();
+  renderOverview();
   updateScoreboard();
 }
 
@@ -451,6 +500,7 @@ function submitAnswer(selected) {
     ui.feedback.textContent = "Correct! Moving to the next step.";
     ui.feedback.className = "feedback good";
     renderQuestion();
+    renderOverview();
   } else {
     state.missedSteps.add(currentIdx);
     ui.feedback.textContent = "Not quite. Review the current step and try again.";

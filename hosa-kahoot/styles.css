@@ -105,3 +105,59 @@ header p { margin-top: 0; color: var(--muted); }
   border-top: 1px solid var(--border);
   padding-top: .75rem;
 }
+
+@media (min-width: 980px) {
+  .app {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+    gap: 1rem;
+    align-items: start;
+  }
+
+  .app > header,
+  .app > .skills,
+  .app > .quiz-card {
+    grid-column: 1;
+  }
+
+  .app > .overview-card {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    position: sticky;
+    top: 1rem;
+  }
+}
+
+.overview-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+}
+
+.overview-card h3 {
+  margin: 0 0 .25rem;
+}
+
+.overview-note {
+  margin: 0 0 .75rem;
+  color: var(--muted);
+  font-size: .9rem;
+}
+
+.overview-list {
+  margin: 0;
+  padding-left: 1.2rem;
+  max-height: 70vh;
+  overflow: auto;
+}
+
+.overview-list > li {
+  margin-bottom: .65rem;
+}
+
+.substeps {
+  margin: .35rem 0 0;
+  padding-left: 1rem;
+  color: var(--muted);
+}
