@@ -17,7 +17,6 @@ const skills = [
       "Held syringe at eye level and ensured correct dose and absence of air bubbles (tapping to dislodge if needed).",
       "Changed needle if indicated.",
       "Covered needle with safety sheath or cap.",
-      "Used sterile technique while filling syringe.",
       "Greeted the patient and introduced self.",
       "Identified patient by checking ID bracelet and asking patient's name.",
       "Explained skill to patient.",
@@ -41,8 +40,6 @@ const skills = [
       "Repositioned patient, provided for comfort and safety and lowered bed if appropriate.",
       "Recorded medication on MAR.",
       "Recorded assessment in nurses notes as appropriate.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
-      "Practiced standard precautions throughout skill."
     ]
   },
   {
@@ -63,7 +60,6 @@ const skills = [
       "Held syringe at eye level and ensured correct dose and absence of air bubbles (tapping to dislodge if needed),",
       "Changed needle if indicated.",
       "Covered needle with safety sheath or cap.",
-      "Used sterile technique while filling syringe.",
       "Greeted the patient and introduced self.",
       "Identified patient by checking ID bracelet and asking patient name.",
       "Explained skill to patient.",
@@ -86,8 +82,6 @@ const skills = [
       "Repositioned patient, provided for comfort and safety and lowered bed if appropriate.",
       "Recorded medication on MAR.",
       "Recorded assessment in nurses notes as appropriate.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
-      "Practiced standard precautions throughout skill."
     ]
   },
   {
@@ -108,7 +102,6 @@ const skills = [
       "Held syringe at eye level and ensured correct dose and absence of air bubbles (tapping to dislodge if needed),",
       "Changed needle if indicated.",
       "Covered needle with safety sheath or cap.",
-      "Used sterile technique while filling syringe.",
       "Greeted the patient and introduced self.",
       "Identified patient by checking ID bracelet and asking patient name.",
       "Explained skill to patient.",
@@ -129,8 +122,6 @@ const skills = [
       "Repositioned patient, provided for comfort and safety and lowered bed if appropriate.",
       "Recorded medication on MAR.",
       "Recorded assessment in nurses notes as appropriate.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
-      "Practiced standard precautions throughout skill."
     ]
   },
   {
@@ -170,8 +161,6 @@ const skills = [
       "Disposed of materials properly.",
       "Removed gloves and disposed of gloves.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
-      "Practiced standard precautions throughout skill.",
       "Documented and reported procedure and findings."
     ]
   },
@@ -212,8 +201,6 @@ const skills = [
       "Disposed of equipment, linen and used materials.",
       "Removed and disposed of gloves.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Practiced standard precautions throughout skill.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
       "Documented skill and patient's tolerance in nurse’s notes."
     ]
   },
@@ -251,9 +238,7 @@ const skills = [
       "Used sterile 4 x 4 pads, gently patted dry the wound’s edges working from the cleanest to the most contaminated area.",
       "Applied sterile dressing as ordered.",
       "Removed PPE and irrigation supplies and disposed of properly.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Practiced standard precautions throughout skill.",
       "Documented and reported procedure and findings."
     ]
   },
@@ -285,8 +270,6 @@ const skills = [
       "If patient had a known communicable disease noted on the zippered bag.",
       "Removed and disposed of PPE.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Practiced standard precautions throughout skill.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
       "Documented and reported procedure."
     ]
   },
@@ -318,10 +301,8 @@ const skills = [
       "Instructed patient to cough to remove as much mucus as possible before treatment.",
       "Instructed the patient to take slow, deep breaths and hold each breath at the end of inspiration for 2 to 5 seconds.",
       "Repeated the procedure until patient has achieved established goal or has given best effort at least 8 to 10 times.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
       "Removed soiled gloves and disposed of properly.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Practiced standard precautions throughout skill.",
       "Documented and reported procedure and findings."
     ]
   },
@@ -350,10 +331,8 @@ const skills = [
       "If secures over ears, removed elastic from ears and pulled away from face OR for tie-on mask untied bottom mask strings and then top strings and pulled away from face.",
       "Did not touch outer surface of mask.",
       "Discarded mask in proper waste container.",
-      "Used appropriate verbal and nonverbal communication with patient and other personnel.",
       "Removed soiled gloves and disposed of properly.",
       "Washed hands or used alcohol-based handrub for hand hygiene.",
-      "Practiced standard precautions throughout skill."
     ]
   }
 ];
